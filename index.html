@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MateLearn – Matemáticas para Ingeniería</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-symbol">∑</span>
+          <div class="logo-text-group">
+            <span class="logo-name">MateLearn</span>
+            <span class="logo-tagline">Matemáticas para Ingeniería</span>
+          </div>
+        </div>
+      </div>
+      <nav id="nav-tree" aria-label="Índice del curso"></nav>
+      <div id="progress-panel">
+        <div class="progress-label">Progreso total</div>
+        <div class="progress-bar-outer"><div id="global-progress-bar" class="progress-bar-inner"></div></div>
+        <div id="global-progress-text" class="progress-text">0 secciones completadas</div>
+        <button id="reset-btn" class="btn-reset">Reiniciar progreso</button>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay"></div>
+
+    <button id="sidebar-toggle" aria-label="Abrir/cerrar menú" aria-expanded="false">☰</button>
+
+    <main id="main">
+      <div id="content"></div>
+    </main>
+  </div>
+
+  <!-- KaTeX must load before the app module -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
