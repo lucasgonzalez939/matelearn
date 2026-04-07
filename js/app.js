@@ -8,6 +8,7 @@ import { renderSidebar, setActiveNavLink, updateProgressPanel } from './componen
 import { renderTheory } from './components/theory.js';
 import { renderExercises, renderGuidedExercises } from './components/exercise.js';
 import { hasSolver, renderSolver } from './components/solver.js';
+import { renderGame } from './components/game.js';
 import { markComplete, resetProgress } from './progress.js';
 import { renderMathInString } from './render.js';
 
@@ -35,6 +36,7 @@ function showWelcome() {
             <p>${ch.description}</p>
           </div>`).join('')}
       </div>
+      <button class="game-entry-btn" id="go-game">🎮 Modo Juego</button>
     </div>`;
 
   contentEl.innerHTML = html;
@@ -44,6 +46,8 @@ function showWelcome() {
     card.addEventListener('click', open);
     card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
   });
+
+  contentEl.querySelector('#go-game')?.addEventListener('click', () => router.navigate('/game'));
 }
 
 /** Section view */
@@ -152,8 +156,15 @@ function showSection(chapterId, sectionId) {
 
 // ─── Routing ──────────────────────────────────────────────────────────────
 
+/** Game screen */
+function showGame() {
+  contentEl.innerHTML = '';
+  renderGame(contentEl);
+}
+
 router
   .on('/', () => showWelcome())
+  .on('/game', () => showGame())
   .on('/:chapter/:section', ({ chapter, section }) => showSection(chapter, section));
 
 // ─── Sidebar & progress ───────────────────────────────────────────────────
