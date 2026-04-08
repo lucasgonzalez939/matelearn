@@ -40,6 +40,13 @@ function checkAnswer(userInput, rawAnswer) {
   return normalizeInput(userInput) === normalizeInput(String(rawAnswer));
 }
 
+// Returns the appropriate inputmode for the mobile keyboard based on the expected answer.
+// Numeric-only answers get the decimal keypad; everything else gets the full keyboard.
+function inputModeForAnswer(rawAnswer) {
+  if (rawAnswer == null) return 'text';
+  return /^-?\d+(\.\d+)?$/.test(String(rawAnswer)) ? 'decimal' : 'text';
+}
+
 // ─── Question generators ──────────────────────────────────────────────────
 // Each returns { questionTeX, answerTeX, hint, category, difficulty, rawAnswer }
 
@@ -335,7 +342,7 @@ function _buildGame(root) {
 
       <div class="game-input-row" id="input-row">
         <input id="game-input" class="game-input" type="text"
-               inputmode="decimal" autocomplete="off" autocorrect="off"
+               inputmode="${inputModeForAnswer(q.rawAnswer)}" autocomplete="off" autocorrect="off"
                autocapitalize="off" spellcheck="false"
                placeholder="Tu respuesta…">
         <button class="game-check-btn" id="btn-check">Comprobar ✓</button>
