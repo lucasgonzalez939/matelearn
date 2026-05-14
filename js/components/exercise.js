@@ -119,6 +119,7 @@ function mcHTML(ex, num) {
 }
 
 function numericHTML(ex, num) {
+  const initialHint = Array.isArray(ex.hints) && ex.hints.length ? ex.hints[0] : ex.hint;
   return `
     <div class="exercise-header">
       <span class="exercise-badge numeric">Cálculo</span>
@@ -126,7 +127,7 @@ function numericHTML(ex, num) {
       <span class="exercise-num">#${num}</span>
     </div>
     <div class="exercise-statement">${renderMathInString(ex.statement)}</div>
-    ${ex.hint ? `<details class="exercise-hint"><summary>💡 Pista</summary><div>${renderMathInString(ex.hint)}</div></details>` : ''}
+    ${initialHint ? `<details class="exercise-hint"><summary>💡 Pista</summary><div>${renderMathInString(initialHint)}</div></details>` : ''}
     <div class="exercise-input-area">
       <input type="text" class="exercise-input"
         placeholder="Ingresa tu respuesta${ex.unit ? ' (' + ex.unit + ')' : ''}"
@@ -153,12 +154,22 @@ function attachGuided(card, ex, sectionId) {
   });
 
   card.querySelectorAll('.btn-check-step').forEach(btn => {
+    let attempts = 0;
     btn.addEventListener('click', () => {
       const row = btn.closest('.guided-step');
       const input = row.querySelector('.step-input');
       const fb = row.querySelector('.step-feedback');
       const ok = checkAnswer(input.value, input.dataset.answer, parseFloat(input.dataset.tolerance));
-      fb.textContent = ok ? '✓ ¡Correcto!' : `✗ La respuesta es: ${input.dataset.answer}`;
+      if (ok) {
+        fb.textContent = `✓ ¡Correcto! ${row.dataset.step ? 'Ese resultado habilita el siguiente paso.' : ''}`;
+      } else {
+        attempts += 1;
+        const step = (ex.steps ?? [])[Number(row.dataset.step)];
+        const hint = step?.hint ?? 'Revisa la fórmula y sustituye con cuidado.';
+        fb.textContent = attempts >= 2
+          ? `✗ Revisa: la respuesta esperada es ${input.dataset.answer}.`
+          : `✗ Aún no. Pista: ${hint}`;
+      }
       fb.className = `step-feedback ${ok ? 'correct' : 'incorrect'}`;
       if (ok) { input.disabled = true; btn.disabled = true; }
     });
@@ -180,6 +191,7 @@ function attachMC(card, ex, sectionId) {
     }
     const chosen = parseInt(sel.value, 10);
     const ok = chosen === ex.answer;
+    const chosenReason = ex.optionRationales?.[chosen];
 
     card.querySelectorAll('.option-label').forEach((lbl, i) => {
       if (i === ex.answer)   lbl.classList.add('correct-option');
@@ -187,8 +199,9 @@ function attachMC(card, ex, sectionId) {
     });
 
     showFeedback(fb, ok ? 'correct' : 'incorrect',
-      ok ? `✓ ¡Correcto! ${renderMathInString(ex.explanation ?? '')}`
-         : `✗ Incorrecto. La respuesta correcta es la opción ${ex.answer + 1}. ${renderMathInString(ex.explanation ?? '')}`);
+      ok
+        ? `✓ ¡Correcto! Elegiste la opción que satisface el concepto evaluado. ${renderMathInString(ex.explanation ?? '')}`
+        : `✗ Incorrecto.${chosenReason ? ' ' + renderMathInString(chosenReason) : ''} La respuesta correcta es la opción ${ex.answer + 1}. ${renderMathInString(ex.explanation ?? '')}`);
 
     btn.disabled = true;
     if (sectionId && ok) markComplete(`ex:${sectionId}:${ex.id}`);
@@ -200,14 +213,30 @@ function attachNumeric(card, ex, sectionId) {
   const inp  = card.querySelector('.exercise-input');
   const fb   = card.querySelector('.exercise-feedback');
   const expl = card.querySelector('.exercise-explanation');
+  const hintBody = card.querySelector('.exercise-hint div');
+  let attempts = 0;
 
   const verify = () => {
     const val = inp.value.trim();
-    if (!val) return;
+    if (!val) {
+      showFeedback(fb, 'warning', 'Ingresa una respuesta para verificar.');
+      return;
+    }
     const ok = checkAnswer(val, ex.answer, ex.tolerance ?? 0.01);
-    showFeedback(fb, ok ? 'correct' : 'incorrect',
-      ok ? `✓ ¡Correcto! ${renderMathInString(ex.explanation ?? '')}`
-         : `✗ Respuesta incorrecta.${ex.hint ? ' ' + renderMathInString(ex.hint) : ''}`);
+    if (!ok) attempts += 1;
+    const progressiveHint = ok ? '' : getProgressiveHint(ex, attempts);
+    if (hintBody && progressiveHint) {
+      hintBody.innerHTML = renderMathInString(progressiveHint);
+    }
+
+    showFeedback(
+      fb,
+      ok ? 'correct' : 'incorrect',
+      ok
+        ? `✓ ¡Correcto! Aplicaste correctamente el procedimiento. ${renderMathInString(ex.explanation ?? '')}`
+        : `✗ ${describeNumericError(val, ex.answer, ex.tolerance ?? 0.01)}${progressiveHint ? ' 💡 ' + renderMathInString(progressiveHint) : ''}`
+    );
+
     if (ok) {
       inp.disabled = true;
       if (btn) btn.disabled = true;
@@ -226,6 +255,33 @@ function showFeedback(el, type, html) {
   el.className = `exercise-feedback ${type}`;
   el.innerHTML = html;
   el.classList.remove('hidden');
+}
+
+function getProgressiveHint(ex, attempts) {
+  const hints = Array.isArray(ex.hints) ? ex.hints.filter(Boolean) : [];
+  if (!hints.length && ex.hint) return ex.hint;
+  if (!hints.length) return '';
+  return hints[Math.min(attempts - 1, hints.length - 1)] ?? '';
+}
+
+function describeNumericError(raw, expected, tolerance) {
+  const val = parseFloat(String(raw).replace(',', '.').trim());
+  const exp = parseFloat(String(expected).replace(',', '.').trim());
+
+  if (isNaN(val) && !isNaN(exp)) {
+    return 'Tu respuesta debe ser numérica.';
+  }
+  if (!isNaN(val) && !isNaN(exp)) {
+    const tol = tolerance * (Math.abs(exp) || 1) + 1e-9;
+    const diff = val - exp;
+    if (Math.abs(Math.abs(val) - Math.abs(exp)) <= tol && Math.abs(diff) > tol) {
+      return 'Parece un error de signo.';
+    }
+    if (Math.abs(diff) <= Math.abs(exp) * 0.15 + tol) {
+      return 'Estás cerca; revisa el redondeo o una operación intermedia.';
+    }
+  }
+  return 'Respuesta incorrecta.';
 }
 
 /**

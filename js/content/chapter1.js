@@ -14,7 +14,7 @@ export default {
     {
       id: 'geometry',
       title: 'Elementos de Geometría',
-      intro: 'La geometría estudia las propiedades de las figuras en el espacio. Aquí repasamos las fórmulas esenciales de áreas, perímetros y volúmenes que se usan en ingeniería.',
+      intro: 'Aprenderás a calcular áreas, perímetros y volúmenes para resolver tareas frecuentes de diseño, medición y estimación en ingeniería.',
       theory: [
         { type: 'heading', text: 'Figuras planas' },
         {
@@ -185,6 +185,10 @@ export default {
           answer: 15,
           unit: 'cm',
           hint: '$c = \\sqrt{a^2 + b^2}$',
+          hints: [
+            'Primero calcula $a^2 + b^2$.',
+            'Luego extrae la raíz cuadrada del resultado para obtener $c$.',
+          ],
           explanation: '$c = \\sqrt{81 + 144} = \\sqrt{225} = 15$ cm.',
         },
         {
@@ -266,7 +270,7 @@ export default {
     {
       id: 'sets',
       title: 'Conjuntos',
-      intro: 'Un conjunto es una colección bien definida de objetos (elementos). La teoría de conjuntos es la base de toda la matemática moderna.',
+      intro: 'En esta sección usarás conjuntos para organizar información técnica y razonar con unión, intersección y complemento.',
       theory: [
         { type: 'heading', text: 'Notación y definiciones' },
         {
@@ -386,6 +390,10 @@ export default {
           difficulty: 1,
           statement: 'Sea $A = \\{a, e, i, o, u\\}$. ¿Cuál es $|A|$?',
           answer: 5,
+          hints: [
+            'La cardinalidad cuenta elementos sin repetir.',
+            'Cuenta una a una las vocales del conjunto.',
+          ],
           explanation: 'La cardinalidad es el número de elementos: 5 vocales.',
         },
         {
@@ -420,7 +428,7 @@ export default {
     {
       id: 'naturals',
       title: 'Números Naturales',
-      intro: 'El conjunto de los números naturales $\\mathbb{N} = \\{0, 1, 2, 3, \\ldots\\}$ es la base de toda aritmética. Aquí estudiamos sus operaciones y la descomposición en factores primos.',
+      intro: 'Trabajarás con números naturales para factorizar, calcular MCD/mcm y resolver problemas de sincronización y reparto.',
       theory: [
         { type: 'heading', text: 'Operaciones básicas' },
         {
@@ -560,6 +568,10 @@ export default {
           statement: 'Calcula $\\text{MCD}(60, 90)$.',
           answer: 30,
           hint: 'Factoriza: $60 = 2^2 \\times 3 \\times 5$ y $90 = 2 \\times 3^2 \\times 5$.',
+          hints: [
+            'Descompón ambos números en factores primos.',
+            'Toma solo factores comunes con el menor exponente.',
+          ],
           explanation: '$\\text{MCD} = 2^1 \\times 3^1 \\times 5^1 = 30$.',
         },
         {
@@ -616,7 +628,7 @@ export default {
     {
       id: 'integers',
       title: 'Números Enteros',
-      intro: 'El conjunto $\\mathbb{Z} = \\{\\ldots, -3, -2, -1, 0, 1, 2, 3, \\ldots\\}$ extiende los naturales añadiendo los negativos. Son indispensables para modelar deudas, temperaturas bajo cero, etc.',
+      intro: 'Aplicarás números enteros para modelar magnitudes con signo, como temperatura, nivel y variación neta.',
       theory: [
         { type: 'heading', text: 'Valor absoluto' },
         {
@@ -717,6 +729,10 @@ export default {
           difficulty: 2,
           statement: 'Calcula $-8 + (-5) - (-3)$.',
           answer: -10,
+          hints: [
+            'Reescribe la resta de negativo como suma: $-(-3)=+3$.',
+            'Agrupa primero $-8 + (-5)$ y luego suma 3.',
+          ],
           explanation: '$-8 - 5 + 3 = -13 + 3 = -10$.',
         },
         {
@@ -745,7 +761,7 @@ export default {
     {
       id: 'rationals',
       title: 'Números Racionales',
-      intro: 'Los racionales $\\mathbb{Q}$ son todos los números que pueden escribirse como fracción $\\frac{p}{q}$ con $q \\neq 0$. Incluyen fracciones, decimales finitos y periódicos.',
+      intro: 'Usarás fracciones, decimales y porcentajes para cálculos proporcionales típicos en costos, mezclas y rendimiento.',
       theory: [
         { type: 'heading', text: 'Fracciones y equivalencia' },
         {
@@ -858,6 +874,10 @@ export default {
           statement: 'Calcula $\\dfrac{5}{8} \\times \\dfrac{4}{3}$. Simplifica y escribe el denominador del resultado.',
           answer: 6,
           hint: '$\\dfrac{5 \\times 4}{8 \\times 3} = \\dfrac{20}{24}$, simplifica dividiendo por MCD(20,24).',
+          hints: [
+            'Multiplica numerador con numerador y denominador con denominador.',
+            'Simplifica $20/24$ usando el MCD de 20 y 24.',
+          ],
           explanation: '$\\dfrac{20}{24} = \\dfrac{5}{6}$. El denominador es 6.',
         },
         {
@@ -895,7 +915,7 @@ export default {
     {
       id: 'reals',
       title: 'Números Reales e Irracionales',
-      intro: 'Los números reales $\\mathbb{R}$ incluyen todos los racionales e irracionales. Los irracionales (como $\\sqrt{2}$, $\\pi$, $e$) tienen expansión decimal infinita no periódica.',
+      intro: 'Estudiarás números reales para simplificar radicales y representar magnitudes continuas en modelos matemáticos.',
       theory: [
         { type: 'heading', text: 'Radicales y propiedades' },
         {
@@ -988,6 +1008,10 @@ export default {
           statement: 'Simplifica $\\sqrt{72}$. ¿Cuál es el coeficiente entero? (Escribe la forma $k\\sqrt{m}$ con $m$ sin cuadrados perfectos y responde $k$.)',
           answer: 6,
           hint: '$72 = 36 \\times 2$',
+          hints: [
+            'Busca el mayor cuadrado perfecto que divide a 72.',
+            'Reescribe como $\\sqrt{36}\\sqrt{2}$ para identificar el coeficiente.',
+          ],
           explanation: '$\\sqrt{72} = \\sqrt{36 \\times 2} = 6\\sqrt{2}$. El coeficiente es 6.',
         },
         {

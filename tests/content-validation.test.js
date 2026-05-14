@@ -9,6 +9,7 @@ import { describe, it, expect, vi } from 'vitest';
 import curriculum from '../js/content/index.js';
 
 describe('curriculum content integrity', () => {
+  const allSections = curriculum.chapters.flatMap(ch => ch.sections);
   const allExercises = curriculum.chapters.flatMap(ch =>
     ch.sections.flatMap(sec => [
       ...(sec.exercises ?? []),
@@ -65,6 +66,38 @@ describe('curriculum content integrity', () => {
         const ids = (sec.exercises ?? []).map(e => e.id);
         const unique = new Set(ids);
         expect(unique.size, `Duplicate exercise IDs in section "${sec.id}"`).toBe(ids.length);
+      });
+    });
+  });
+
+  it('every section includes pedagogical standard metadata', () => {
+    allSections.forEach(sec => {
+      expect(typeof sec.pedagogy?.objective).toBe('string');
+      expect(sec.pedagogy.objective.length).toBeGreaterThan(20);
+      expect(Array.isArray(sec.pedagogy?.prerequisites)).toBe(true);
+      expect(sec.pedagogy.prerequisites.length).toBeGreaterThan(0);
+      expect(typeof sec.pedagogy?.cognitiveLevel).toBe('string');
+      expect(sec.pedagogy.cognitiveLevel.length).toBeGreaterThan(2);
+      expect(typeof sec.pedagogy?.masteryCriteria).toBe('string');
+      expect(sec.pedagogy.masteryCriteria.length).toBeGreaterThan(20);
+      expect(Array.isArray(sec.pedagogy?.didacticFlow)).toBe(true);
+      expect(sec.pedagogy.didacticFlow).toEqual([
+        'intro-proposito-practico',
+        'teoria-progresiva',
+        'ejemplo-resuelto',
+        'ejercicio-guiado',
+        'practica-autonoma-por-dificultad',
+      ]);
+    });
+  });
+
+  it('every section preserves a guided-to-practice progression and explained outcomes', () => {
+    allSections.forEach(sec => {
+      expect((sec.guidedExercises ?? []).length).toBeGreaterThan(0);
+      expect((sec.exercises ?? []).length).toBeGreaterThan(0);
+      (sec.exercises ?? []).forEach(ex => {
+        expect(typeof ex.explanation).toBe('string');
+        expect(ex.explanation.length).toBeGreaterThan(0);
       });
     });
   });
