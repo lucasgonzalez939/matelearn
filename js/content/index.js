@@ -87,6 +87,12 @@ const PEDAGOGICAL_STANDARD_BY_SECTION = {
     cognitiveLevel: 'Aplicar y analizar',
     masteryCriteria: 'Opera fracciones algebraicas indicando condiciones de existencia.',
   },
+  'exam-practice': {
+    objective: 'Integrar potenciación, polinomios, ecuaciones racionales y modelización en formato de parcial.',
+    prerequisites: ['Polinomios', 'Fracciones algebraicas', 'Geometría plana'],
+    cognitiveLevel: 'Analizar y resolver',
+    masteryCriteria: 'Resuelve simulacros de 10 puntos justificando propiedades y validando resultados.',
+  },
   lines: {
     objective: 'Modelar rectas en el plano usando pendiente, intercepto y formas equivalentes de la ecuación.',
     prerequisites: ['Coordenadas cartesianas', 'Ecuaciones lineales'],

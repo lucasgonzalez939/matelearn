@@ -101,4 +101,15 @@ describe('curriculum content integrity', () => {
       });
     });
   });
+
+  it('includes an exam practice section with guided and autonomous exam-style tasks', () => {
+    const examSection = curriculum.chapters
+      .flatMap(ch => ch.sections)
+      .find(sec => sec.id === 'exam-practice');
+
+    expect(examSection).toBeTruthy();
+    expect((examSection.guidedExercises ?? []).length).toBeGreaterThanOrEqual(3);
+    expect((examSection.exercises ?? []).length).toBeGreaterThanOrEqual(6);
+    expect(examSection.theory.some(b => b.type === 'visualization')).toBe(true);
+  });
 });
