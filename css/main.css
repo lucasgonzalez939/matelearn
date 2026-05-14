@@ -678,7 +678,7 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
   font-size: .9rem;
   font-family: var(--font-body);
   color: var(--text);
-  background: white;
+  background: var(--surface);
   transition: border-color var(--transition);
   width: 140px;
 }
@@ -690,7 +690,7 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
 }
 
 .step-input:disabled, .exercise-input:disabled {
-  background: #f1f5f9;
+  background: var(--bg);
   color: var(--text-muted);
   cursor: not-allowed;
 }
@@ -796,12 +796,12 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
 .btn-check:disabled, .btn-check-step:disabled { background: #94a3b8; cursor: not-allowed; }
 
 .btn-show-solution {
-  background: white;
+  background: var(--surface);
   color: var(--text-muted);
   border: 1.5px solid var(--border);
 }
 
-.btn-show-solution:hover { background: #f1f5f9; color: var(--text); border-color: #94a3b8; }
+.btn-show-solution:hover { background: var(--bg); color: var(--text); border-color: #94a3b8; }
 
 .exercise-actions { margin-top: .75rem; display: flex; gap: .5rem; }
 
@@ -1060,7 +1060,7 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
   color: var(--text-muted);
   margin-top: .3rem;
   padding: .3rem .6rem;
-  background: white;
+  background: var(--surface);
   border-left: 3px solid var(--color-info);
   border-radius: 0 var(--radius) var(--radius) 0;
 }
