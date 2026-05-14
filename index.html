@@ -41,6 +41,19 @@
   <!-- KaTeX must load before the app module -->
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
+  <!-- Reset-progress confirmation dialog (FIX-10) -->
+  <dialog id="reset-dialog" aria-labelledby="reset-dialog-title">
+    <div class="dialog-content">
+      <h3 id="reset-dialog-title">Reiniciar progreso</h3>
+      <p>¿Seguro que quieres borrar todo tu progreso? Esta acción no se puede deshacer.</p>
+      <div class="dialog-actions">
+        <button id="reset-cancel" class="btn-secondary">Cancelar</button>
+        <button id="reset-confirm" class="btn-danger">Sí, reiniciar</button>
+      </div>
+    </div>
+  </dialog>
+
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

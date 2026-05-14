@@ -7,10 +7,22 @@ import curriculum from './content/index.js';
 import { renderSidebar, setActiveNavLink, updateProgressPanel } from './components/sidebar.js';
 import { renderTheory } from './components/theory.js';
 import { renderExercises, renderGuidedExercises } from './components/exercise.js';
-import { hasSolver, renderSolver } from './components/solver.js';
+import { hasSolver, renderSolver, SOLVERS } from './components/solver.js';
 import { renderGame } from './components/game.js';
 import { markComplete, resetProgress } from './progress.js';
 import { renderMathInString } from './render.js';
+
+// ─── Utilities ────────────────────────────────────────────────────────────
+
+/** Escape user-controlled strings before inserting into innerHTML. */
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 // ─── Main container ───────────────────────────────────────────────────────
 
@@ -56,7 +68,7 @@ function showSection(chapterId, sectionId) {
   const section = curriculum.findSection(chapterId, sectionId);
 
   if (!chapter || !section) {
-    contentEl.innerHTML = `<div style="padding:2rem;color:#dc2626">Sección no encontrada: ${chapterId}/${sectionId}</div>`;
+    contentEl.innerHTML = `<div class="section-not-found">Sección no encontrada: ${escapeHtml(chapterId)}/${escapeHtml(sectionId)}</div>`;
     return;
   }
 
@@ -106,7 +118,7 @@ function showSection(chapterId, sectionId) {
   if (section.exercises?.length) {
     exercisesPanel.appendChild(renderExercises(section.exercises, section.id));
   } else {
-    exercisesPanel.innerHTML = '<p style="color:#94a3b8;padding:1rem">No hay ejercicios de práctica registrados aún para esta sección.</p>';
+    exercisesPanel.innerHTML = '<p class="no-exercises-msg">No hay ejercicios de práctica registrados aún para esta sección.</p>';
   }
 
   // Add "Section complete" button at bottom of exercises tab
@@ -119,7 +131,7 @@ function showSection(chapterId, sectionId) {
           <h3>¡Sección terminada!</h3>
           <p>¿Completaste los ejercicios? Marca esta sección como completada.</p>
         </div>
-        <button id="mark-complete-btn" style="margin-left:auto;padding:.5rem 1rem;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600">
+        <button id="mark-complete-btn" class="btn-mark-complete">
           Marcar completa ✓
         </button>
       </div>`;
@@ -130,7 +142,7 @@ function showSection(chapterId, sectionId) {
       const btn = completeBanner.querySelector('#mark-complete-btn');
       btn.textContent = '✓ Marcada como completa';
       btn.disabled = true;
-      btn.style.background = '#94a3b8';
+      btn.classList.add('btn-mark-complete--done');
       updateProgressPanel();
       renderSidebar(); // refresh nav items
     });
@@ -162,10 +174,31 @@ function showGame() {
   renderGame(contentEl);
 }
 
+/** 404 – route not found */
+function show404(path) {
+  contentEl.innerHTML = `
+    <div class="not-found-view">
+      <h2>Página no encontrada</h2>
+      <p>La ruta <code>${escapeHtml(path)}</code> no existe.</p>
+      <a href="#/">Volver al inicio</a>
+    </div>`;
+}
+
 router
   .on('/', () => showWelcome())
   .on('/game', () => showGame())
   .on('/:chapter/:section', ({ chapter, section }) => showSection(chapter, section));
+
+// Catch-all: unmatched routes show a 404 view
+window.addEventListener('routeNotFound', ({ detail }) => show404(detail.path));
+
+// ─── Solver key validation ────────────────────────────────────────────────
+
+Object.keys(SOLVERS).forEach(id => {
+  if (!curriculum.chapters.some(ch => ch.sections.some(s => s.id === id))) {
+    console.warn(`[Solver] No section found for solver key "${id}"`);
+  }
+});
 
 // ─── Sidebar & progress ───────────────────────────────────────────────────
 
@@ -203,16 +236,39 @@ sidebar?.addEventListener('click', e => {
   }
 });
 
-// ─── Reset progress button ────────────────────────────────────────────────
+// ─── Reset progress – custom dialog (FIX-10) ─────────────────────────────
+
+const resetDialog = document.getElementById('reset-dialog');
 
 document.getElementById('reset-btn')?.addEventListener('click', () => {
-  if (confirm('¿Seguro que quieres reiniciar todo el progreso?')) {
-    resetProgress();
-    renderSidebar();
-    updateProgressPanel();
-  }
+  resetDialog?.showModal();
 });
 
-// ─── Start router ─────────────────────────────────────────────────────────
+document.getElementById('reset-confirm')?.addEventListener('click', () => {
+  resetDialog?.close();
+  resetProgress();
+  renderSidebar();
+  updateProgressPanel();
+});
 
-router.start();
+document.getElementById('reset-cancel')?.addEventListener('click', () => {
+  resetDialog?.close();
+});
+
+// Close on backdrop click
+resetDialog?.addEventListener('click', e => {
+  if (e.target === resetDialog) resetDialog.close();
+});
+
+// ─── Start router (gated on KaTeX) ───────────────────────────────────────
+
+function startWhenReady() {
+  if (typeof katex !== 'undefined') {
+    router.start();
+    return;
+  }
+  // Wait for all deferred scripts to finish loading
+  window.addEventListener('load', () => router.start(), { once: true });
+}
+
+startWhenReady();

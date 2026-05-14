@@ -1,7 +1,7 @@
 /**
  * sidebar.js – Renders and manages the left navigation tree.
  */
-import { isComplete, totalCompleted } from '../progress.js';
+import { isComplete, totalSectionsCompleted } from '../progress.js';
 import curriculum from '../content/index.js';
 
 /** Total number of sections across all chapters. */
@@ -15,7 +15,7 @@ export function renderSidebar() {
 
   nav.innerHTML = curriculum.chapters.map(ch => `
     <div class="nav-chapter" data-chapter="${ch.id}">
-      <div class="nav-chapter-header" data-toggle="${ch.id}">
+      <div class="nav-chapter-header" data-toggle="${ch.id}" role="button" tabindex="0" aria-expanded="false">
         <span class="chapter-number">${ch.number}</span>
         <span class="chapter-title">${ch.shortTitle ?? ch.title}</span>
         <span class="chapter-toggle">▾</span>
@@ -33,8 +33,17 @@ export function renderSidebar() {
 
   // Chapter toggles
   nav.querySelectorAll('.nav-chapter-header').forEach(header => {
-    header.addEventListener('click', () => {
-      header.closest('.nav-chapter').classList.toggle('open');
+    const toggle = () => {
+      const chapter = header.closest('.nav-chapter');
+      const open = chapter.classList.toggle('open');
+      header.setAttribute('aria-expanded', String(open));
+    };
+    header.addEventListener('click', toggle);
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
     });
   });
 
@@ -45,7 +54,7 @@ export function renderSidebar() {
 }
 
 export function updateProgressPanel() {
-  const done = totalCompleted();
+  const done = totalSectionsCompleted();
   const total = totalSections();
   const pct = total ? Math.round((done / total) * 100) : 0;
 

@@ -50,6 +50,8 @@ class Router {
         return;
       }
     }
+    // No route matched — notify the app so it can render a 404 view.
+    window.dispatchEvent(new CustomEvent('routeNotFound', { detail: { path } }));
   }
 }
 

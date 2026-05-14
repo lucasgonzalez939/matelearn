@@ -45,9 +45,19 @@ export function getScore(id) {
   return _state.scores[id] ?? null;
 }
 
-/** Total number of completed items. */
+/** Total number of completed items (all namespaces). */
 export function totalCompleted() {
   return Object.keys(_state.completed).length;
+}
+
+/** Total number of sections marked as completed (keys prefixed with "section:"). */
+export function totalSectionsCompleted() {
+  return Object.keys(_state.completed).filter(k => k.startsWith('section:')).length;
+}
+
+/** Total number of individual exercises completed (keys prefixed with "ex:"). */
+export function totalExercisesCompleted() {
+  return Object.keys(_state.completed).filter(k => k.startsWith('ex:')).length;
 }
 
 /** Reset all progress (requires explicit call). */

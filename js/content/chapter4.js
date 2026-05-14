@@ -464,10 +464,10 @@ export default {
         {
           id: 'obli-p2', type: 'numeric', difficulty: 3,
           statement: 'En un triángulo con $a=5$, $b=7$, $c=8$, calcula $\\cos C$ usando la ley del coseno.',
-          answer: 0.4,
+          answer: 0.1429,
           hint: '$\\cos C = \\frac{a^2+b^2-c^2}{2ab}$.',
           explanation: '$\\cos C = \\frac{25+49-64}{70} = \\frac{10}{70} = \\frac{1}{7} \\approx 0.1429$.',
-          tolerance: 0.02,
+          tolerance: 0.005,
         },
         {
           id: 'obli-p3', type: 'numeric', difficulty: 2,

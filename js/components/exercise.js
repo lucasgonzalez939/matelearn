@@ -86,7 +86,7 @@ function guidedHTML(ex, num) {
                 <button class="btn-check-step">Verificar</button>
                 <span class="step-feedback"></span>
                </div>`
-            : `<div class="step-info" style="font-size:.9rem;color:#475569;margin-top:.4rem">${renderMathInString(step.info ?? '')}</div>`}
+            : `<div class="step-info">${renderMathInString(step.info ?? '')}</div>`}
         </div>`).join('')}
     </div>
     <div class="exercise-explanation hidden">
@@ -231,8 +231,9 @@ function showFeedback(el, type, html) {
 /**
  * Compare user input against expected answer.
  * Handles numeric values with tolerance, and string comparison.
+ * Exported for testing.
  */
-function checkAnswer(raw, expected, tolerance = 0.01) {
+export function checkAnswer(raw, expected, tolerance = 0.01) {
   const val  = parseFloat(String(raw).replace(',', '.').trim());
   const exp  = parseFloat(String(expected).replace(',', '.').trim());
   if (!isNaN(val) && !isNaN(exp)) {
