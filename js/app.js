@@ -217,29 +217,36 @@ const overlay   = document.getElementById('sidebar-overlay');
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
 const THEME_STORAGE_KEY = 'matelearn-theme';
+const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
 
-function applyTheme(theme) {
+function getSystemTheme() {
+  return systemThemeMedia.matches ? 'dark' : 'light';
+}
+
+function applyTheme(theme, { persist = true } = {}) {
   if (theme === 'dark' || theme === 'light') {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-    localStorage.removeItem(THEME_STORAGE_KEY);
+    if (persist) localStorage.setItem(THEME_STORAGE_KEY, theme);
   }
 
-  const effectiveTheme = theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   if (themeToggleBtn) {
-    const isDark = effectiveTheme === 'dark';
+    const isDark = theme === 'dark';
     themeToggleBtn.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
     themeToggleBtn.setAttribute('aria-pressed', String(isDark));
   }
 }
 
-applyTheme(localStorage.getItem(THEME_STORAGE_KEY));
+const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+applyTheme(savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : getSystemTheme(), { persist: false });
+
+systemThemeMedia.addEventListener('change', () => {
+  if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+    applyTheme(getSystemTheme(), { persist: false });
+  }
+});
 
 themeToggleBtn?.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme')
-    || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const current = document.documentElement.getAttribute('data-theme') || getSystemTheme();
   applyTheme(current === 'dark' ? 'light' : 'dark');
 });
 
