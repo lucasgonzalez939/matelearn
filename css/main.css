@@ -23,6 +23,8 @@
   --text-primary:      #1e293b;
   --text-muted:        #64748b;
   --border:            #e2e8f0;
+  --math-bg:           #f8faff;
+  --math-border:       #dbeafe;
   --accent:            #2563eb;
 
   --radius:            8px;
@@ -401,8 +403,8 @@ img { max-width: 100%; }
 }
 
 .math-block {
-  background: #f8faff;
-  border: 1px solid #dbeafe;
+  background: var(--math-bg);
+  border: 1px solid var(--math-border);
   border-radius: var(--radius);
   padding: 1rem 1.25rem;
   margin: 1rem 0;
@@ -1691,6 +1693,8 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
     --text-primary: #f1f5f9;
     --text-muted:#94a3b8;
     --border:    #334155;
+    --math-bg:   #1a2744;
+    --math-border:#334155;
     --accent:    #60a5fa;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
     --shadow:    0 4px 12px rgba(0,0,0,.4);
@@ -1738,7 +1742,6 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
   .theory-table tbody tr:nth-child(even) td {
     background: var(--surface-2);
   }
-  .math-block { background: #1a2744; }
   .dialog-content { background: var(--surface); color: var(--text); }
   #reset-dialog { background: var(--surface); }
 }
