@@ -107,13 +107,13 @@ const PEDAGOGICAL_STANDARD_BY_SECTION = {
   },
   ellipse: {
     objective: 'Interpretar la ecuación de la elipse y sus elementos principales en el plano.',
-    prerequisites: ['Conicas básicas', 'Álgebra elemental'],
+    prerequisites: ['Cónicas básicas', 'Álgebra elemental'],
     cognitiveLevel: 'Comprender y aplicar',
     masteryCriteria: 'Identifica centro, semiejes y orientación de la elipse.',
   },
   hyperbola: {
     objective: 'Reconocer estructura y parámetros de la hipérbola en forma estándar.',
-    prerequisites: ['Conicas', 'Álgebra elemental'],
+    prerequisites: ['Cónicas', 'Álgebra elemental'],
     cognitiveLevel: 'Comprender y aplicar',
     masteryCriteria: 'Determina centro, ejes y asíntotas en ejercicios básicos.',
   },
