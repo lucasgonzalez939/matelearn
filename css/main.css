@@ -1713,8 +1713,9 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
 }
 
 :root[data-theme="dark"] { color-scheme: dark; }
-:root[data-theme="dark"] body { background: var(--bg); color: var(--text); }
+:root[data-theme="dark"] body,
 :root[data-theme="dark"] #main { background: var(--bg); }
+:root[data-theme="dark"] body { color: var(--text); }
 :root[data-theme="dark"] .chapter-card,
 :root[data-theme="dark"] .exercise-card,
 :root[data-theme="dark"] .theory-definition,

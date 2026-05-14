@@ -223,8 +223,12 @@ function getSystemTheme() {
   return systemThemeMedia.matches ? 'dark' : 'light';
 }
 
+function isValidTheme(theme) {
+  return theme === 'dark' || theme === 'light';
+}
+
 function applyTheme(theme, { persist = true } = {}) {
-  if (theme === 'dark' || theme === 'light') {
+  if (isValidTheme(theme)) {
     document.documentElement.setAttribute('data-theme', theme);
     if (persist) localStorage.setItem(THEME_STORAGE_KEY, theme);
   }
@@ -237,7 +241,7 @@ function applyTheme(theme, { persist = true } = {}) {
 }
 
 const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-applyTheme(savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : getSystemTheme(), { persist: false });
+applyTheme(isValidTheme(savedTheme) ? savedTheme : getSystemTheme(), { persist: false });
 
 systemThemeMedia.addEventListener('change', () => {
   if (!localStorage.getItem(THEME_STORAGE_KEY)) {
