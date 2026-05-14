@@ -17,9 +17,13 @@
 
   --bg:                #f1f5f9;
   --surface:           #ffffff;
+  --surface-1:         #ffffff;
+  --surface-2:         #f8fafc;
   --text:              #1e293b;
+  --text-primary:      #1e293b;
   --text-muted:        #64748b;
   --border:            #e2e8f0;
+  --accent:            #2563eb;
 
   --radius:            8px;
   --radius-lg:         12px;
@@ -1681,9 +1685,13 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
   :root {
     --bg:        #0f172a;
     --surface:   #1e293b;
+    --surface-1: #1e293b;
+    --surface-2: #273449;
     --text:      #f1f5f9;
+    --text-primary:#f1f5f9;
     --text-muted:#94a3b8;
     --border:    #334155;
+    --accent:    #60a5fa;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
     --shadow:    0 4px 12px rgba(0,0,0,.4);
   }
@@ -1707,6 +1715,28 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
     background: var(--surface);
     color: var(--text);
     border-color: var(--border);
+  }
+  .guided-step,
+  .solver-step,
+  .exercise-explanation {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .exercise-hint > div,
+  .solver-input,
+  .solver-select,
+  .solver-tab-btn:hover,
+  .option-label:hover {
+    background: var(--bg);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .theory-table th {
+    background: #334155;
+    color: var(--text);
+  }
+  .theory-table tbody tr:nth-child(even) td {
+    background: #273449;
   }
   .math-block { background: #1a2744; }
   .dialog-content { background: var(--surface); color: var(--text); }
