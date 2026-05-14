@@ -165,7 +165,7 @@ function withPedagogicalStandard(section) {
     ...section,
     pedagogy: {
       ...standard,
-      didacticFlow: [...PEDAGOGICAL_FLOW],
+      didacticFlow: PEDAGOGICAL_FLOW,
     },
   };
 }

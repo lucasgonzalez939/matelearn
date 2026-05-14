@@ -154,17 +154,19 @@ function attachGuided(card, ex, sectionId) {
   });
 
   card.querySelectorAll('.btn-check-step').forEach(btn => {
-    let attempts = 0;
     btn.addEventListener('click', () => {
       const row = btn.closest('.guided-step');
+      if (!row) return;
       const input = row.querySelector('.step-input');
       const fb = row.querySelector('.step-feedback');
       const ok = checkAnswer(input.value, input.dataset.answer, parseFloat(input.dataset.tolerance));
       if (ok) {
-        fb.textContent = `✓ ¡Correcto! ${row.dataset.step ? 'Ese resultado habilita el siguiente paso.' : ''}`;
+        fb.textContent = '✓ ¡Correcto! Ese resultado habilita el siguiente paso.';
       } else {
-        attempts += 1;
-        const step = (ex.steps ?? [])[Number(row.dataset.step)];
+        const attempts = Number(row.dataset.attempts ?? '0') + 1;
+        row.dataset.attempts = String(attempts);
+        const stepIndex = row.dataset.step !== undefined ? Number(row.dataset.step) : NaN;
+        const step = Number.isInteger(stepIndex) ? (ex.steps ?? [])[stepIndex] : null;
         const hint = step?.hint ?? 'Revisa la fórmula y sustituye con cuidado.';
         fb.textContent = attempts >= 2
           ? `✗ Revisa: la respuesta esperada es ${input.dataset.answer}.`
