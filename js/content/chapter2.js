@@ -490,6 +490,15 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           result: '$P(x) = (x-2)(x+1)(x+2)$',
         },
+        {
+          type: 'text',
+          html: 'Conecta álgebra y gráfica: cuando $x=k$ es raíz, la curva de $P(x)$ cruza el eje $x$ en ese valor. En exámenes, este enlace ayuda a verificar si un candidato a raíz es razonable antes de aplicar Ruffini.',
+        },
+        {
+          type: 'visualization',
+          id: 'function-graph',
+          params: { type: 'quadratic', a: 1, b: -5, c: 6 },
+        },
       ],
       guidedExercises: [
         {
@@ -510,6 +519,16 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           explanation: '$P(2) = 8 - 16 + 2 + 6 = 0$ ✓. Ruffini da cociente $x^2 - 2x - 3$ y resto 0.',
         },
+        {
+          id: 'poly-g3', type: 'guided', difficulty: 3,
+          statement: 'Halla $k$ para que el resto de dividir $P(x)=x^3+kx^2-4x-8$ por $(x-2)$ sea 0. Luego indica el exponente de mayor grado del cociente.',
+          steps: [
+            { instruction: 'Por Teorema del Resto, exige $P(2)=0$: $8 + 4k - 8 - 8 = 0$.', formula: '4k - 8 = 0' },
+            { instruction: '¿Cuánto vale $k$?', answer: '2', placeholder: 'k = ?', hint: 'Despeja linealmente en $4k-8=0$.' },
+            { instruction: 'Si divides un polinomio de grado 3 por $(x-2)$, ¿qué grado tiene el cociente?', answer: '2', placeholder: 'grado = ?', hint: 'El grado disminuye en 1 al dividir por un binomio lineal.' },
+          ],
+          explanation: 'Se impone $P(2)=0$: $8+4k-8-8=0\\Rightarrow 4k-8=0\\Rightarrow k=2$. El cociente de un grado 3 entre un lineal es de grado 2.',
+        },
       ],
       exercises: [
         { id: 'poly-p1', type: 'numeric', difficulty: 1, statement: '¿Cuál es el grado de $P(x) = 5x^4 - 2x^2 + x - 7$?', answer: 4, explanation: 'El mayor exponente es 4.' },
@@ -524,9 +543,22 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         {
           id: 'poly-p4', type: 'numeric', difficulty: 3,
           statement: 'Divide $P(x) = x^3 + x^2 - 4x - 4$ por $(x-2)$ usando Ruffini. ¿Cuál es el término independiente del cociente?',
-          answer: -2,
+          answer: 2,
           hint: 'Coeficientes: $[1, 1, -4, -4]$, $k=2$.',
-          explanation: 'Ruffini: $1 \\to 3 \\to 2 \\to \\boxed{0}$. Cociente: $x^2+3x+2$, término independiente: $-2$.',
+          explanation: 'Ruffini: $1 \\to 3 \\to 2 \\to \\boxed{0}$. Cociente: $x^2+3x+2$, término independiente: $2$.',
+        },
+        {
+          id: 'poly-p5', type: 'multiple-choice', difficulty: 3,
+          statement: 'Si al dividir $P(x)=x^3-5x^2+kx+6$ por $(x-2)$ el resto es cero, ¿cuánto vale $k$?',
+          options: ['$k=1$', '$k=2$', '$k=3$', '$k=4$'],
+          answer: 2,
+          optionRationales: [
+            'Sustituir $x=2$ no da cero con $k=1$.',
+            'Con $k=2$, $P(2)=8-20+4+6=-2$; aún no se anula.',
+            'Correcto: $P(2)=8-20+2k+6=-6+2k=0\\Rightarrow k=3$.',
+            'Con $k=4$, $P(2)=2$, no cumple Teorema del Resto.',
+          ],
+          explanation: 'Aplicando Teorema del Resto: $P(2)=0\\Rightarrow 8-20+2k+6=0\\Rightarrow -6+2k=0\\Rightarrow k=3$.',
         },
       ],
     },
@@ -614,6 +646,22 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
       title: 'Fracciones Algebraicas',
       intro: 'Una fracción algebraica es un cociente de dos polinomios $\\dfrac{P(x)}{Q(x)}$ con $Q(x) \\neq 0$. Las operaciones son análogas a las de fracciones numéricas.',
       theory: [
+        { type: 'heading', text: 'Conjunto de validez (C.V.)' },
+        {
+          type: 'definition',
+          term: 'Regla obligatoria en ecuaciones racionales',
+          text: 'Antes de resolver, se debe imponer $Q(x) \\neq 0$ para cada denominador. Ese conjunto de restricciones es el <strong>Conjunto de Validez</strong>.',
+        },
+        {
+          type: 'example',
+          title: 'Ejemplo: C.V. de $\\dfrac{2}{x-1} - \\dfrac{1}{x+1}$',
+          problem: 'Determina el C.V. antes de operar.',
+          steps: [
+            'Denominador 1: $x-1 \\neq 0 \\Rightarrow x \\neq 1$.',
+            'Denominador 2: $x+1 \\neq 0 \\Rightarrow x \\neq -1$.',
+          ],
+          result: '$C.V. = \\mathbb{R}\\setminus\\{-1,1\\}$.',
+        },
         { type: 'heading', text: 'Simplificación' },
         {
           type: 'example',
@@ -647,6 +695,16 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           explanation: '$\\dfrac{(x-3)(x+2)}{x-3} = x+2$ para $x \\neq 3$.',
         },
+        {
+          id: 'alfrac-g2', type: 'guided', difficulty: 3,
+          statement: 'Resuelve $\\dfrac{2}{x-1} - \\dfrac{1}{x+1} = \\dfrac{1}{3}$ indicando C.V. y la raíz mayor.',
+          steps: [
+            { instruction: 'Primero establece restricciones de denominador. ¿Cuántos valores quedan excluidos del C.V.?', answer: '2', placeholder: 'cantidad excluida = ?', hint: 'Anula cada denominador por separado.' },
+            { instruction: 'Multiplica por $3(x-1)(x+1)$ para eliminar denominadores: $6(x+1)-3(x-1)=x^2-1$.', formula: 'x^2 - 3x - 10 = 0' },
+            { instruction: 'Factoriza $x^2-3x-10=(x-5)(x+2)$. ¿Cuál es la raíz mayor válida?', answer: '5', placeholder: 'raíz mayor = ?', hint: 'Ambas raíces cumplen el C.V. porque son distintas de $\\pm1$.' },
+          ],
+          explanation: 'C.V.: $x\\neq\\pm1$. Al despejar: $6(x+1)-3(x-1)=x^2-1\\Rightarrow x^2-3x-10=0\\Rightarrow x=5$ o $x=-2$. Ambas son válidas; la mayor es 5.',
+        },
       ],
       exercises: [
         {
@@ -662,6 +720,147 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           options: ['$\\dfrac{2}{x^2-1}$', '$\\dfrac{-2}{x^2-1}$', '$\\dfrac{2x}{x^2-1}$', '$\\dfrac{2}{x^2+1}$'],
           answer: 0,
           explanation: '$\\dfrac{(x+1)-(x-1)}{(x-1)(x+1)} = \\dfrac{2}{x^2-1}$.',
+        },
+        {
+          id: 'alfrac-p3', type: 'multiple-choice', difficulty: 3,
+          statement: 'Para $\\dfrac{x+4}{x^2-9}$, ¿cuál es el C.V. correcto?',
+          options: [
+            '$\\mathbb{R}\\setminus\\{-3,3\\}$',
+            '$\\mathbb{R}\\setminus\\{0,3\\}$',
+            '$\\mathbb{R}\\setminus\\{-9,9\\}$',
+            '$\\mathbb{R}\\setminus\\{3\\}$',
+          ],
+          answer: 0,
+          explanation: '$x^2-9=(x-3)(x+3)\\neq0\\Rightarrow x\\neq3$ y $x\\neq-3$.',
+        },
+      ],
+    },
+
+    // ──────────────────────────────────────────────────────────────────────
+    // 2.7 PRÁCTICA DE EXAMEN
+    // ──────────────────────────────────────────────────────────────────────
+    {
+      id: 'exam-practice',
+      title: 'Práctica de Examen',
+      intro: 'Simula condiciones de parcial: sin calculadora, resultados exactos y justificación de cada propiedad usada en el procedimiento.',
+      theory: [
+        { type: 'heading', text: 'Estructura sugerida de parcial (10 puntos)' },
+        {
+          type: 'table',
+          headers: ['Bloque', 'Tema núcleo', 'Puntaje'],
+          rows: [
+            ['Ejercicio 1', 'Aritmética y potenciación con exponente $n$', '2.5'],
+            ['Ejercicio 2', 'Polinomios: Teorema del Resto/Factor', '2.5'],
+            ['Ejercicio 3', 'Ecuación racional + C.V.', '2.5'],
+            ['Ejercicio 4', 'Modelización geométrica o porcentual multietapa', '2.5'],
+          ],
+        },
+        {
+          type: 'note',
+          html: 'Checklist de examen: (1) definir C.V. cuando haya denominadores, (2) escribir propiedades usadas, (3) mantener resultados exactos, (4) verificar coherencia final.',
+        },
+        {
+          type: 'example',
+          title: 'Mini-modelo resuelto: Teorema del Resto',
+          problem: 'Halla $k$ para que el resto de dividir $P(x)=x^3-3x^2+kx+6$ por $(x-2)$ sea 0.',
+          steps: [
+            'Por Teorema del Resto: $P(2)=0$.',
+            '$P(2)=8-12+2k+6=2+2k=0$.',
+            '$k=-1$.',
+            'Verificación: $P(2)=8-12-2+6=0$ ✓.',
+          ],
+          result: '$k=-1$',
+        },
+        { type: 'heading', text: 'Visualización rápida para modelización de áreas' },
+        {
+          type: 'text',
+          html: 'Usa el explorador para estimar y luego justificar algebraicamente áreas compuestas (trapecio, rombo, círculo). Primero interpreta la figura, después formula.',
+        },
+        {
+          type: 'visualization',
+          id: 'geometry-gallery',
+          params: { defaultShape: 'trapezoid' },
+        },
+      ],
+      guidedExercises: [
+        {
+          id: 'exam-g1', type: 'guided', difficulty: 3,
+          statement: 'Simplifica $\\dfrac{x^n\\cdot x^{n+2}}{x^{2n-1}}$ usando leyes de exponentes y luego evalúa para $x=2$.',
+          steps: [
+            { instruction: 'Suma exponentes en el numerador y resta el del denominador.', formula: 'x^{n+n+2-(2n-1)} = x^3' },
+            { instruction: '¿Cuál es el exponente final?', answer: '3', placeholder: 'exponente = ?', hint: 'Simplifica $n+n+2-(2n-1)$.' },
+            { instruction: 'Evalúa para $x=2$: $2^3 = ?$', answer: '8', placeholder: 'valor = ?' },
+          ],
+          explanation: 'Se simplifica a $x^3$ para todo $x\\neq0$. Al evaluar en $x=2$, el valor es $8$.',
+        },
+        {
+          id: 'exam-g2', type: 'guided', difficulty: 3,
+          statement: 'Halla $k$ para que $P(x)=x^3-4x^2+kx+8$ sea divisible por $(x-2)$. Luego indica el grado del cociente.',
+          steps: [
+            { instruction: 'Usa Teorema del Resto: $P(2)=0$.', formula: '8-16+2k+8=0 \\Rightarrow 2k=0' },
+            { instruction: '¿Cuánto vale $k$?', answer: '0', placeholder: 'k = ?' },
+            { instruction: 'Si $\\deg P = 3$ y divides por un binomio lineal, ¿qué grado tiene el cociente?', answer: '2', placeholder: 'grado = ?' },
+          ],
+          explanation: 'Divisible por $(x-2)$ implica $P(2)=0$. De ahí $k=0$. El cociente resultante tiene grado 2.',
+        },
+        {
+          id: 'exam-g3', type: 'guided', difficulty: 3,
+          statement: 'Resuelve $\\dfrac{2}{x-1} - \\dfrac{1}{x+1} = \\dfrac{1}{3}$ indicando C.V. y cuántas soluciones válidas hay.',
+          steps: [
+            { instruction: 'Establece C.V. con denominadores no nulos: $x\\neq1$, $x\\neq-1$. ¿Cuántas restricciones hay?', answer: '2', placeholder: 'restricciones = ?' },
+            { instruction: 'Elimina denominadores: $6(x+1)-3(x-1)=x^2-1$.', formula: 'x^2-3x-10=0' },
+            { instruction: 'Factoriza y cuenta soluciones válidas.', answer: '2', placeholder: 'soluciones válidas = ?', hint: 'Raíces: $x=5$ y $x=-2$, ambas pertenecen al C.V.' },
+          ],
+          explanation: 'Con C.V.: $x\\neq\\pm1$. La ecuación reduce a $(x-5)(x+2)=0$, con dos soluciones válidas: $x=5$ y $x=-2$.',
+        },
+      ],
+      exercises: [
+        {
+          id: 'exam-p1', type: 'numeric', difficulty: 1,
+          statement: 'Simplifica $\\dfrac{a^5\\cdot a^2}{a^3}$. ¿Cuál es el exponente final de $a$?',
+          answer: 4,
+          explanation: '$a^{5+2-3}=a^4$.',
+        },
+        {
+          id: 'exam-p2', type: 'multiple-choice', difficulty: 2,
+          statement: 'Si $P(x)=x^2-5x+6$, ¿qué valor de $x$ hace $P(x)=0$?',
+          options: ['$x=1$', '$x=2$', '$x=5$', '$x=6$'],
+          answer: 1,
+          explanation: '$x^2-5x+6=(x-2)(x-3)$, por lo que $x=2$ y $x=3$ son raíces. Entre opciones, solo aparece $x=2$.',
+        },
+        {
+          id: 'exam-p3', type: 'multiple-choice', difficulty: 2,
+          statement: 'En $\\dfrac{x+1}{x^2-4}$, ¿qué valores deben excluirse del C.V.?',
+          options: ['$x\\neq\\pm2$', '$x\\neq\\pm4$', '$x\\neq2$', '$x\\neq0$'],
+          answer: 0,
+          explanation: '$x^2-4=(x-2)(x+2)\\neq0\\Rightarrow x\\neq2,-2$.',
+        },
+        {
+          id: 'exam-p4', type: 'numeric', difficulty: 3,
+          statement: 'El área de un trapecio es $A=54\\,cm^2$, con $B=12\\,cm$ y $b=6\\,cm$. Halla la altura $h$.',
+          answer: 6,
+          hint: 'Usa $A=\\dfrac{(B+b)h}{2}$.',
+          explanation: '$54=\\dfrac{(12+6)h}{2}=9h\\Rightarrow h=6$.',
+        },
+        {
+          id: 'exam-p5', type: 'multiple-choice', difficulty: 3,
+          statement: '¿Qué afirmación es verdadera para todo entero impar $n$?',
+          options: ['$n^2$ es par', '$n^2$ es impar', '$n+1$ es impar', '$2n+1$ es par'],
+          answer: 1,
+          optionRationales: [
+            'Si $n$ es impar, $n^2$ también conserva paridad impar.',
+            'Correcto: $(2k+1)^2=4k^2+4k+1=2(2k^2+2k)+1$, que es impar.',
+            'Si $n$ es impar, $n+1$ es par.',
+            '$2n+1$ siempre es impar, no par.',
+          ],
+          explanation: 'Para $n=2k+1$, se obtiene $n^2=2(2k^2+2k)+1$, forma impar.',
+        },
+        {
+          id: 'exam-p6', type: 'numeric', difficulty: 3,
+          statement: 'En un descuento sucesivo del $20\\%$ y luego $10\\%$, ¿qué porcentaje total de reducción representa sobre el precio original?',
+          answer: 28,
+          hint: 'Multiplica factores: precio final $=0.8\\times0.9=0.72$.',
+          explanation: 'El precio final es $72\\%$ del original, por tanto la reducción total es $28\\%$.',
         },
       ],
     },

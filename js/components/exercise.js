@@ -119,6 +119,7 @@ function mcHTML(ex, num) {
 }
 
 function numericHTML(ex, num) {
+  const initialHint = Array.isArray(ex.hints) && ex.hints.length ? ex.hints[0] : ex.hint;
   return `
     <div class="exercise-header">
       <span class="exercise-badge numeric">Cálculo</span>
@@ -126,7 +127,7 @@ function numericHTML(ex, num) {
       <span class="exercise-num">#${num}</span>
     </div>
     <div class="exercise-statement">${renderMathInString(ex.statement)}</div>
-    ${ex.hint ? `<details class="exercise-hint"><summary>💡 Pista</summary><div>${renderMathInString(ex.hint)}</div></details>` : ''}
+    ${initialHint ? `<details class="exercise-hint"><summary>💡 Pista</summary><div>${renderMathInString(initialHint)}</div></details>` : ''}
     <div class="exercise-input-area">
       <input type="text" class="exercise-input"
         placeholder="Ingresa tu respuesta${ex.unit ? ' (' + ex.unit + ')' : ''}"
@@ -145,6 +146,7 @@ function numericHTML(ex, num) {
 function attachGuided(card, ex, sectionId) {
   const solutionBtn = card.querySelector('.btn-show-solution');
   const explanation = card.querySelector('.exercise-explanation');
+  const stepAttempts = new WeakMap();
 
   solutionBtn?.addEventListener('click', () => {
     explanation.classList.toggle('hidden');
@@ -155,10 +157,25 @@ function attachGuided(card, ex, sectionId) {
   card.querySelectorAll('.btn-check-step').forEach(btn => {
     btn.addEventListener('click', () => {
       const row = btn.closest('.guided-step');
+      if (!row) return;
       const input = row.querySelector('.step-input');
       const fb = row.querySelector('.step-feedback');
       const ok = checkAnswer(input.value, input.dataset.answer, parseFloat(input.dataset.tolerance));
-      fb.textContent = ok ? '✓ ¡Correcto!' : `✗ La respuesta es: ${input.dataset.answer}`;
+      if (ok) {
+        fb.textContent = '✓ ¡Correcto! Ese resultado habilita el siguiente paso.';
+      } else {
+        const attempts = (stepAttempts.get(row) ?? 0) + 1;
+        stepAttempts.set(row, attempts);
+        const stepIndex = row.dataset.step !== undefined ? Number(row.dataset.step) : NaN;
+        const steps = ex.steps ?? [];
+        const step = Number.isInteger(stepIndex) && stepIndex >= 0 && stepIndex < steps.length
+          ? steps[stepIndex]
+          : null;
+        const hint = step?.hint ?? 'Revisa la fórmula y sustituye con cuidado.';
+        fb.textContent = attempts >= 2
+          ? `✗ Revisa: la respuesta esperada es ${input.dataset.answer}.`
+          : `✗ Aún no. Pista: ${hint}`;
+      }
       fb.className = `step-feedback ${ok ? 'correct' : 'incorrect'}`;
       if (ok) { input.disabled = true; btn.disabled = true; }
     });
@@ -180,6 +197,7 @@ function attachMC(card, ex, sectionId) {
     }
     const chosen = parseInt(sel.value, 10);
     const ok = chosen === ex.answer;
+    const chosenReason = ex.optionRationales?.[chosen];
 
     card.querySelectorAll('.option-label').forEach((lbl, i) => {
       if (i === ex.answer)   lbl.classList.add('correct-option');
@@ -187,8 +205,9 @@ function attachMC(card, ex, sectionId) {
     });
 
     showFeedback(fb, ok ? 'correct' : 'incorrect',
-      ok ? `✓ ¡Correcto! ${renderMathInString(ex.explanation ?? '')}`
-         : `✗ Incorrecto. La respuesta correcta es la opción ${ex.answer + 1}. ${renderMathInString(ex.explanation ?? '')}`);
+      ok
+        ? `✓ ¡Correcto! Elegiste la opción que satisface el concepto evaluado. ${renderMathInString(ex.explanation ?? '')}`
+        : `✗ Incorrecto.${chosenReason ? ' ' + renderMathInString(chosenReason) : ''} La respuesta correcta es la opción ${ex.answer + 1}. ${renderMathInString(ex.explanation ?? '')}`);
 
     btn.disabled = true;
     if (sectionId && ok) markComplete(`ex:${sectionId}:${ex.id}`);
@@ -200,14 +219,30 @@ function attachNumeric(card, ex, sectionId) {
   const inp  = card.querySelector('.exercise-input');
   const fb   = card.querySelector('.exercise-feedback');
   const expl = card.querySelector('.exercise-explanation');
+  const hintBody = card.querySelector('.exercise-hint div');
 
   const verify = () => {
     const val = inp.value.trim();
-    if (!val) return;
+    if (!val) {
+      showFeedback(fb, 'warning', 'Ingresa una respuesta para verificar.');
+      return;
+    }
     const ok = checkAnswer(val, ex.answer, ex.tolerance ?? 0.01);
-    showFeedback(fb, ok ? 'correct' : 'incorrect',
-      ok ? `✓ ¡Correcto! ${renderMathInString(ex.explanation ?? '')}`
-         : `✗ Respuesta incorrecta.${ex.hint ? ' ' + renderMathInString(ex.hint) : ''}`);
+    const attempts = Number(card.dataset.numericAttempts ?? '0') + (ok ? 0 : 1);
+    card.dataset.numericAttempts = String(attempts);
+    const progressiveHint = ok ? '' : getProgressiveHint(ex, attempts);
+    if (hintBody && progressiveHint) {
+      hintBody.innerHTML = sanitizeHtml(renderMathInString(progressiveHint));
+    }
+
+    showFeedback(
+      fb,
+      ok ? 'correct' : 'incorrect',
+      ok
+        ? `✓ ¡Correcto! Aplicaste correctamente el procedimiento. ${renderMathInString(ex.explanation ?? '')}`
+        : `✗ ${describeNumericError(val, ex.answer, ex.tolerance ?? 0.01)}${progressiveHint ? ' 💡 ' + renderMathInString(progressiveHint) : ''}`
+    );
+
     if (ok) {
       inp.disabled = true;
       if (btn) btn.disabled = true;
@@ -224,8 +259,80 @@ function attachNumeric(card, ex, sectionId) {
 
 function showFeedback(el, type, html) {
   el.className = `exercise-feedback ${type}`;
-  el.innerHTML = html;
+  el.innerHTML = sanitizeHtml(html);
   el.classList.remove('hidden');
+}
+
+function getProgressiveHint(ex, attempts) {
+  const hints = Array.isArray(ex.hints) ? ex.hints.filter(Boolean) : [];
+  if (!hints.length && ex.hint) return ex.hint;
+  if (!hints.length) return '';
+  return hints[Math.min(attempts - 1, hints.length - 1)] ?? '';
+}
+
+function describeNumericError(raw, expected, tolerance) {
+  const val = parseFloat(String(raw).replace(',', '.').trim());
+  const exp = parseFloat(String(expected).replace(',', '.').trim());
+
+  if (isNaN(val) && !isNaN(exp)) {
+    return 'Tu respuesta debe ser numérica.';
+  }
+  if (!isNaN(val) && !isNaN(exp)) {
+    const tol = tolerance * (Math.abs(exp) || 1) + 1e-9;
+    const diff = val - exp;
+    if (Math.abs(exp) < 1e-9) {
+      return Math.abs(val) <= tol * 3
+        ? 'Estás cerca de 0; revisa signos y redondeo.'
+        : 'Revisa la operación: el resultado esperado está centrado en 0.';
+    }
+    if (Math.abs(Math.abs(val) - Math.abs(exp)) <= tol && Math.abs(diff) > tol) {
+      return 'Parece un error de signo.';
+    }
+    if (Math.abs(diff) <= Math.abs(exp) * 0.15 + tol) {
+      return 'Estás cerca; revisa el redondeo o una operación intermedia.';
+    }
+  }
+  return 'Respuesta incorrecta.';
+}
+
+function sanitizeHtml(html) {
+  const template = document.createElement('template');
+  template.innerHTML = String(html ?? '');
+
+  template.content
+    .querySelectorAll('script, style, iframe, object, embed, link, meta')
+    .forEach(el => el.remove());
+
+  template.content.querySelectorAll('*').forEach(el => {
+    [...el.attributes].forEach(attr => {
+      const name = attr.name.toLowerCase();
+      if (name.startsWith('on')) {
+        el.removeAttribute(attr.name);
+      }
+      if ((name === 'href' || name === 'src') && isUnsafeUrl(attr.value)) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+
+  return template.innerHTML;
+}
+
+function isUnsafeUrl(value) {
+  let normalized = String(value ?? '').trim().replace(/[\u0000-\u001F\u007F\s]+/g, '');
+  for (let i = 0; i < 2; i += 1) {
+    try {
+      const decoded = decodeURIComponent(normalized);
+      if (decoded === normalized) break;
+      normalized = decoded;
+    } catch {
+      break;
+    }
+  }
+  const lower = normalized.toLowerCase();
+  return lower.startsWith('javascript:')
+    || lower.startsWith('data:')
+    || lower.startsWith('vbscript:');
 }
 
 /**
