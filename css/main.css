@@ -1732,11 +1732,11 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
     border-color: var(--border);
   }
   .theory-table th {
-    background: #334155;
+    background: var(--border);
     color: var(--text);
   }
   .theory-table tbody tr:nth-child(even) td {
-    background: #273449;
+    background: var(--surface-2);
   }
   .math-block { background: #1a2744; }
   .dialog-content { background: var(--surface); color: var(--text); }
