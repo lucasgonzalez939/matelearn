@@ -25,6 +25,7 @@
   --border:            #e2e8f0;
   --math-bg:           #f8faff;
   --math-border:       #dbeafe;
+  --table-header-bg:   #f1f5f9;
   --accent:            #2563eb;
 
   --radius:            8px;
@@ -503,7 +504,7 @@ img { max-width: 100%; }
 }
 
 .theory-table th {
-  background: #f1f5f9;
+  background: var(--table-header-bg);
   font-weight: 700;
   padding: .65rem 1rem;
   text-align: left;
@@ -516,7 +517,7 @@ img { max-width: 100%; }
 }
 
 .theory-table tbody tr:last-child td { border-bottom: none; }
-.theory-table tbody tr:nth-child(even) td { background: #f8fafc; }
+.theory-table tbody tr:nth-child(even) td { background: var(--surface-2); }
 
 /* ─── Visualization container ────────────────────────────────────────────── */
 .viz-container {
@@ -1694,7 +1695,8 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
     --text-muted:#94a3b8;
     --border:    #334155;
     --math-bg:   #1a2744;
-    --math-border:#334155;
+    --math-border: #334155;
+    --table-header-bg: #273449;
     --accent:    #60a5fa;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
     --shadow:    0 4px 12px rgba(0,0,0,.4);
@@ -1734,13 +1736,6 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
     background: var(--bg);
     color: var(--text);
     border-color: var(--border);
-  }
-  .theory-table th {
-    background: var(--border);
-    color: var(--text);
-  }
-  .theory-table tbody tr:nth-child(even) td {
-    background: var(--surface-2);
   }
   .dialog-content { background: var(--surface); color: var(--text); }
   #reset-dialog { background: var(--surface); }
