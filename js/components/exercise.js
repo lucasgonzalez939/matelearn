@@ -228,7 +228,7 @@ function attachNumeric(card, ex, sectionId) {
     if (!ok) attempts += 1;
     const progressiveHint = ok ? '' : getProgressiveHint(ex, attempts);
     if (hintBody && progressiveHint) {
-      hintBody.innerHTML = renderMathInString(progressiveHint);
+      hintBody.innerHTML = sanitizeHtml(renderMathInString(progressiveHint));
     }
 
     showFeedback(
@@ -255,7 +255,7 @@ function attachNumeric(card, ex, sectionId) {
 
 function showFeedback(el, type, html) {
   el.className = `exercise-feedback ${type}`;
-  el.innerHTML = html;
+  el.innerHTML = sanitizeHtml(html);
   el.classList.remove('hidden');
 }
 
@@ -284,6 +284,30 @@ function describeNumericError(raw, expected, tolerance) {
     }
   }
   return 'Respuesta incorrecta.';
+}
+
+function sanitizeHtml(html) {
+  const template = document.createElement('template');
+  template.innerHTML = String(html ?? '');
+
+  template.content
+    .querySelectorAll('script, style, iframe, object, embed, link, meta')
+    .forEach(el => el.remove());
+
+  template.content.querySelectorAll('*').forEach(el => {
+    [...el.attributes].forEach(attr => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.trim().toLowerCase();
+      if (name.startsWith('on')) {
+        el.removeAttribute(attr.name);
+      }
+      if ((name === 'href' || name === 'src') && value.startsWith('javascript:')) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+
+  return template.innerHTML;
 }
 
 /**
