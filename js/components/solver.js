@@ -7,7 +7,7 @@ import { math } from '../render.js';
 // ─── Registry ─────────────────────────────────────────────────────────────
 
 /** sectionId → array of { label, init } solver descriptors */
-const SOLVERS = {
+export const SOLVERS = {
   'linear-equations': [
     { label: 'Ecuación lineal  ax + b = c', init: initLinear },
   ],

@@ -469,8 +469,18 @@ img { max-width: 100%; }
   margin-top: .15rem;
 }
 
+.example-result {
+  margin-top: .5rem;
+  font-weight: 700;
+}
+
+.viz-placeholder {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+}
+
 .theory-table-wrap {
-  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin: 1rem 0;
 }
@@ -1546,4 +1556,178 @@ canvas { display: block; border-radius: var(--radius); max-width: 100%; height: 
   .game-check-btn { width: 100%; }
   .game-result-stats { gap: .75rem; }
   .game-stat { min-width: 70px; padding: .6rem .5rem; }
+}
+
+/* ─── Utility classes (FIX-11) ───────────────────────────────────────────── */
+
+/* Section-not-found error message */
+.section-not-found {
+  padding: 2rem;
+  color: var(--color-error);
+}
+
+/* Empty exercises placeholder */
+.no-exercises-msg {
+  color: #94a3b8;
+  padding: 1rem;
+}
+
+/* Mark-complete button */
+.btn-mark-complete {
+  margin-left: auto;
+  padding: .5rem 1rem;
+  background: var(--color-success);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background var(--transition);
+}
+.btn-mark-complete:hover:not(:disabled) { background: #15803d; }
+.btn-mark-complete--done,
+.btn-mark-complete:disabled { background: #94a3b8; cursor: default; }
+
+/* Step info text (guided exercises) */
+.step-info {
+  font-size: .9rem;
+  color: #475569;
+  margin-top: .4rem;
+}
+
+/* 404 not-found view */
+.not-found-view {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+.not-found-view h2 { margin-bottom: .75rem; }
+.not-found-view code {
+  background: var(--border);
+  padding: .1em .4em;
+  border-radius: 4px;
+  font-size: .9em;
+}
+.not-found-view a {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ─── Reset-progress dialog (FIX-10) ─────────────────────────────────────── */
+
+#reset-dialog {
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: var(--shadow);
+  max-width: 400px;
+  width: 90%;
+}
+#reset-dialog::backdrop {
+  background: rgba(0, 0, 0, .5);
+}
+.dialog-content {
+  padding: 1.5rem;
+}
+.dialog-content h3 {
+  margin: 0 0 .5rem;
+  font-size: 1.1rem;
+}
+.dialog-content p {
+  color: var(--text-muted);
+  margin: 0 0 1.25rem;
+  font-size: .95rem;
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .75rem;
+}
+.btn-secondary {
+  padding: .45rem 1rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background var(--transition);
+}
+.btn-secondary:hover { background: var(--border); }
+
+.btn-danger {
+  padding: .45rem 1rem;
+  background: var(--color-error);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background var(--transition);
+}
+.btn-danger:hover { background: #b91c1c; }
+
+/* ─── Tablet breakpoint 769–1024px (FIX-13) ──────────────────────────────── */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #sidebar { width: 220px; }
+  #main { margin-left: 220px; padding: 1.5rem; }
+  .welcome-screen h1 { font-size: 1.6rem; }
+  .chapters-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ─── Dark mode (FIX-13) ──────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #0f172a;
+    --surface:   #1e293b;
+    --text:      #f1f5f9;
+    --text-muted:#94a3b8;
+    --border:    #334155;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
+    --shadow:    0 4px 12px rgba(0,0,0,.4);
+  }
+  body { background: var(--bg); color: var(--text); }
+  #main { background: var(--bg); }
+  .chapter-card,
+  .exercise-card,
+  .theory-definition,
+  .theory-note,
+  .theory-example,
+  .viz-container,
+  .solver-panel,
+  .guided-step {
+    background: var(--surface);
+    border-color: var(--border);
+  }
+  .tab-btn { background: var(--surface); color: var(--text); border-color: var(--border); }
+  .tab-btn.active { background: var(--color-primary); color: #fff; }
+  .section-complete-banner { background: var(--surface); border-color: var(--border); }
+  input, select, textarea {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .math-block { background: #1a2744; }
+  .dialog-content { background: var(--surface); color: var(--text); }
+  #reset-dialog { background: var(--surface); }
+}
+
+/* ─── Print stylesheet (FIX-13) ───────────────────────────────────────────── */
+@media print {
+  #sidebar,
+  #sidebar-toggle,
+  #sidebar-overlay,
+  .tabs,
+  .game-entry-btn,
+  .section-complete-banner,
+  .btn-check,
+  .btn-check-step,
+  .btn-show-solution,
+  .btn-reset,
+  .viz-controls { display: none !important; }
+
+  #main { margin-left: 0 !important; max-width: 100% !important; padding: 0 !important; }
+  .tab-panel { display: block !important; }
+  body { background: white !important; color: black !important; font-size: 12pt; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: .8em; color: #666; }
 }

@@ -28,21 +28,25 @@ export function renderVisualization(container, id, params) {
 
 // ─── Shared helpers ───────────────────────────────────────────────────────
 
-function makeCanvas(w, h) {
+function makeCanvas(w, h, ariaLabel) {
   const c = document.createElement('canvas');
   c.width = w; c.height = h;
   c.style.maxWidth = '100%';
+  c.setAttribute('role', 'img');
+  c.setAttribute('aria-label', ariaLabel ?? 'Visualización interactiva');
   return c;
 }
 
 function dpr() { return Math.min(window.devicePixelRatio || 1, 2); }
 
-function hiDPI(canvas, w, h) {
+function hiDPI(canvas, w, h, ariaLabel) {
   const r = dpr();
   canvas.width  = w * r;
   canvas.height = h * r;
   canvas.style.width  = w + 'px';
   // No style.height — CSS height:auto scales proportionally via max-width:100%
+  canvas.setAttribute('role', 'img');
+  canvas.setAttribute('aria-label', ariaLabel ?? 'Visualización interactiva');
   canvas.getContext('2d').scale(r, r);
   return canvas;
 }

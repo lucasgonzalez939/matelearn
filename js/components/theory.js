@@ -61,7 +61,7 @@ function renderBlock(block) {
                 <span>${renderMathInString(s)}</span>
               </div>`).join('')}
           </div>
-          ${block.result ? `<div class="example-result" style="margin-top:.5rem;font-weight:700;">${renderMathInString(block.result)}</div>` : ''}
+          ${block.result ? `<div class="example-result">${renderMathInString(block.result)}</div>` : ''}
         </div>`;
 
     case 'table':
@@ -77,7 +77,7 @@ function renderBlock(block) {
 
     case 'visualization':
       return `<div class="viz-container" data-viz="${block.id}" data-viz-params='${JSON.stringify(block.params ?? {})}'>
-        <div class="viz-placeholder" style="text-align:center;padding:2rem;color:#94a3b8">
+        <div class="viz-placeholder">
           ⏳ Cargando visualización…
         </div>
       </div>`;
