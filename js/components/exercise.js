@@ -146,7 +146,7 @@ function numericHTML(ex, num) {
 function attachGuided(card, ex, sectionId) {
   const solutionBtn = card.querySelector('.btn-show-solution');
   const explanation = card.querySelector('.exercise-explanation');
-  const attemptsByRow = new WeakMap();
+  const stepAttempts = new WeakMap();
 
   solutionBtn?.addEventListener('click', () => {
     explanation.classList.toggle('hidden');
@@ -164,10 +164,13 @@ function attachGuided(card, ex, sectionId) {
       if (ok) {
         fb.textContent = '✓ ¡Correcto! Ese resultado habilita el siguiente paso.';
       } else {
-        const attempts = (attemptsByRow.get(row) ?? 0) + 1;
-        attemptsByRow.set(row, attempts);
+        const attempts = (stepAttempts.get(row) ?? 0) + 1;
+        stepAttempts.set(row, attempts);
         const stepIndex = row.dataset.step !== undefined ? Number(row.dataset.step) : NaN;
-        const step = Number.isInteger(stepIndex) ? (ex.steps ?? [])[stepIndex] : null;
+        const steps = ex.steps ?? [];
+        const step = Number.isInteger(stepIndex) && stepIndex >= 0 && stepIndex < steps.length
+          ? steps[stepIndex]
+          : null;
         const hint = step?.hint ?? 'Revisa la fórmula y sustituye con cuidado.';
         fb.textContent = attempts >= 2
           ? `✗ Revisa: la respuesta esperada es ${input.dataset.answer}.`
