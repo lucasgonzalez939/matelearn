@@ -146,6 +146,7 @@ function numericHTML(ex, num) {
 function attachGuided(card, ex, sectionId) {
   const solutionBtn = card.querySelector('.btn-show-solution');
   const explanation = card.querySelector('.exercise-explanation');
+  const attemptsByRow = new WeakMap();
 
   solutionBtn?.addEventListener('click', () => {
     explanation.classList.toggle('hidden');
@@ -163,8 +164,8 @@ function attachGuided(card, ex, sectionId) {
       if (ok) {
         fb.textContent = '✓ ¡Correcto! Ese resultado habilita el siguiente paso.';
       } else {
-        const attempts = Number(row.dataset.attempts ?? '0') + 1;
-        row.dataset.attempts = String(attempts);
+        const attempts = (attemptsByRow.get(row) ?? 0) + 1;
+        attemptsByRow.set(row, attempts);
         const stepIndex = row.dataset.step !== undefined ? Number(row.dataset.step) : NaN;
         const step = Number.isInteger(stepIndex) ? (ex.steps ?? [])[stepIndex] : null;
         const hint = step?.hint ?? 'Revisa la fórmula y sustituye con cuidado.';
@@ -216,7 +217,6 @@ function attachNumeric(card, ex, sectionId) {
   const fb   = card.querySelector('.exercise-feedback');
   const expl = card.querySelector('.exercise-explanation');
   const hintBody = card.querySelector('.exercise-hint div');
-  let attempts = 0;
 
   const verify = () => {
     const val = inp.value.trim();
@@ -225,7 +225,8 @@ function attachNumeric(card, ex, sectionId) {
       return;
     }
     const ok = checkAnswer(val, ex.answer, ex.tolerance ?? 0.01);
-    if (!ok) attempts += 1;
+    const attempts = Number(card.dataset.numericAttempts ?? '0') + (ok ? 0 : 1);
+    card.dataset.numericAttempts = String(attempts);
     const progressiveHint = ok ? '' : getProgressiveHint(ex, attempts);
     if (hintBody && progressiveHint) {
       hintBody.innerHTML = sanitizeHtml(renderMathInString(progressiveHint));
@@ -276,6 +277,11 @@ function describeNumericError(raw, expected, tolerance) {
   if (!isNaN(val) && !isNaN(exp)) {
     const tol = tolerance * (Math.abs(exp) || 1) + 1e-9;
     const diff = val - exp;
+    if (Math.abs(exp) < 1e-9) {
+      return Math.abs(val) <= tol * 3
+        ? 'Estás cerca de 0; revisa signos y redondeo.'
+        : 'Revisa la operación: el resultado esperado está centrado en 0.';
+    }
     if (Math.abs(Math.abs(val) - Math.abs(exp)) <= tol && Math.abs(diff) > tol) {
       return 'Parece un error de signo.';
     }
@@ -297,17 +303,33 @@ function sanitizeHtml(html) {
   template.content.querySelectorAll('*').forEach(el => {
     [...el.attributes].forEach(attr => {
       const name = attr.name.toLowerCase();
-      const value = attr.value.trim().toLowerCase();
       if (name.startsWith('on')) {
         el.removeAttribute(attr.name);
       }
-      if ((name === 'href' || name === 'src') && value.startsWith('javascript:')) {
+      if ((name === 'href' || name === 'src') && isUnsafeUrl(attr.value)) {
         el.removeAttribute(attr.name);
       }
     });
   });
 
   return template.innerHTML;
+}
+
+function isUnsafeUrl(value) {
+  let normalized = String(value ?? '').trim().replace(/[\u0000-\u001F\u007F\s]+/g, '');
+  for (let i = 0; i < 2; i += 1) {
+    try {
+      const decoded = decodeURIComponent(normalized);
+      if (decoded === normalized) break;
+      normalized = decoded;
+    } catch {
+      break;
+    }
+  }
+  const lower = normalized.toLowerCase();
+  return lower.startsWith('javascript:')
+    || lower.startsWith('data:')
+    || lower.startsWith('vbscript:');
 }
 
 /**
