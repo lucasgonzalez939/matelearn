@@ -214,6 +214,45 @@ window.addEventListener('progressUpdate', () => {
 const toggleBtn = document.getElementById('sidebar-toggle');
 const sidebar   = document.getElementById('sidebar');
 const overlay   = document.getElementById('sidebar-overlay');
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+
+const THEME_STORAGE_KEY = 'matelearn-theme';
+const systemThemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+function getSystemTheme() {
+  return systemThemeMedia.matches ? 'dark' : 'light';
+}
+
+function isValidTheme(theme) {
+  return theme === 'dark' || theme === 'light';
+}
+
+function applyTheme(theme, { persist = true } = {}) {
+  if (isValidTheme(theme)) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (persist) localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }
+
+  if (themeToggleBtn) {
+    const isDark = theme === 'dark';
+    themeToggleBtn.textContent = isDark ? '☀️ Modo claro' : '🌙 Modo oscuro';
+    themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+  }
+}
+
+const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+applyTheme(isValidTheme(savedTheme) ? savedTheme : getSystemTheme(), { persist: false });
+
+systemThemeMedia.addEventListener('change', () => {
+  if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+    applyTheme(getSystemTheme(), { persist: false });
+  }
+});
+
+themeToggleBtn?.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') || getSystemTheme();
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
 
 toggleBtn?.addEventListener('click', () => {
   const open = sidebar.classList.toggle('open');
