@@ -37,6 +37,16 @@ export default {
           id: 'geometry-shapes',
           params: { shape: 'rectangle' },
         },
+        { type: 'heading', text: 'Bloque visual estándar de fórmulas geométricas' },
+        { type: 'formula', tex: 'A_{rect}=b\\,h,\\;A_{tri}=\\frac{b\\,h}{2},\\;A_{circ}=\\pi r^2,\\;P_{rect}=2(b+h),\\;C=2\\pi r' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $b,h,r$ son longitudes visibles en la figura; el área corresponde a la región coloreada y el perímetro/circunferencia al borde resaltado.',
+        },
+        {
+          type: 'note',
+          html: 'Advertencia visual: usar la altura inclinada de un triángulo en lugar de la perpendicular produce áreas incorrectas.',
+        },
         { type: 'heading', text: 'Descripción detallada de las figuras' },
         {
           type: 'text',
@@ -113,7 +123,7 @@ export default {
           id: 'geo-g1',
           type: 'guided',
           difficulty: 1,
-          statement: 'Calcula el área y el perímetro de un triángulo con base $b = 8$ cm y altura $h = 5$ cm. Los lados miden 7, 7 y 8 cm.',
+          statement: 'Calcula el área y el perímetro de un triángulo con base $b = 8$ cm y altura $h = 5$ cm. Usa el explorador visual para identificar base, altura y contorno.',
           steps: [
             {
               instruction: 'Escribe la fórmula del área del triángulo.',
