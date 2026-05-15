@@ -73,7 +73,7 @@ export default {
           id: 'angle-types',
           params: { angle: 45 },
         },
-        { type: 'heading', text: 'Bloque visual estándar para $s=r\\theta$' },
+        { type: 'heading', text: 'Bloque visual estándar' },
         { type: 'formula', tex: 's=r\\theta\\;(\\theta\\text{ en rad})' },
         {
           type: 'text',
@@ -86,7 +86,7 @@ export default {
         },
         {
           type: 'note',
-          html: 'Error típico: usar $\\theta$ en grados sin convertir a radianes.',
+          html: 'Error visual frecuente: usar $\\theta$ en grados sin convertir a radianes.',
         },
       ],
       guidedExercises: [
@@ -312,7 +312,7 @@ export default {
         },
         {
           type: 'note',
-          html: 'Error típico: operar ambos lados de una identidad a la vez sin aislar un lado.',
+          html: 'Error visual frecuente: operar ambos lados de una identidad a la vez sin aislar un lado.',
         },
       ],
       guidedExercises: [
@@ -503,7 +503,7 @@ export default {
         },
         {
           type: 'note',
-          html: 'Error típico: elegir ley del seno cuando el caso inicial es LAL/SAS.',
+          html: 'Error visual frecuente: elegir ley del seno cuando el caso inicial es LAL/SAS.',
         },
       ],
       guidedExercises: [

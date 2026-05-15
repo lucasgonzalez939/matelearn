@@ -328,7 +328,7 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         },
         {
           type: 'note',
-          html: 'Error típico: no invertir el símbolo al dividir o multiplicar por un número negativo.',
+          html: 'Error visual frecuente: no invertir el símbolo al dividir o multiplicar por un número negativo.',
         },
       ],
       guidedExercises: [
@@ -656,7 +656,7 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         { type: 'formula', tex: 'a^2-b^2=(a+b)(a-b),\\quad (a+b)^2=a^2+2ab+b^2,\\quad a^3+b^3=(a+b)(a^2-ab+b^2)' },
         {
           type: 'text',
-          html: '<strong>Qué representa cada término:</strong> los productos notables pueden leerse como particiones de área (2D) o descomposición estructural (3D).',
+          html: '<strong>Qué significa cada término:</strong> los productos notables pueden leerse como particiones de área (2D) o descomposición estructural (3D).',
         },
         {
           type: 'visualization',
@@ -665,7 +665,7 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         },
         {
           type: 'note',
-          html: 'Error típico: confundir $a^2-b^2$ con $(a-b)^2$.',
+          html: 'Error visual frecuente: confundir $a^2-b^2$ con $(a-b)^2$.',
         },
       ],
       guidedExercises: [
@@ -766,7 +766,7 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         },
         {
           type: 'note',
-          html: 'Error típico: cancelar términos en suma/resta en vez de factores multiplicativos.',
+          html: 'Error visual frecuente: cancelar términos en suma/resta en vez de factores multiplicativos.',
         },
       ],
       guidedExercises: [

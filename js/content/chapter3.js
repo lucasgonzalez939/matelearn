@@ -176,7 +176,7 @@ export default {
         },
         {
           type: 'note',
-          html: 'Error típico: tratar rectas paralelas como si siempre hubiera solución.',
+          html: 'Error visual frecuente: tratar rectas paralelas como si siempre hubiera solución.',
         },
       ],
       guidedExercises: [
