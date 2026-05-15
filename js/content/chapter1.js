@@ -333,6 +333,16 @@ export default {
           id: 'venn-diagram',
           params: { setA: [1,2,3,4,5], setB: [3,4,5,6,7] },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '|A\\cup B|=|A|+|B|-|A\\cap B|,\\quad A^c=U\\setminus A' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> cada región del diagrama de Venn cuenta una parte del total; la intersección se resta una vez para evitar doble conteo.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: sumar cardinalidades de $A$ y $B$ sin corregir la zona compartida $A\\cap B$.',
+        },
         {
           type: 'example',
           title: 'Ejemplo: Operaciones entre A y B',
@@ -354,7 +364,7 @@ export default {
           id: 'sets-g1',
           type: 'guided',
           difficulty: 1,
-          statement: 'Sea $U = \\{1, 2, 3, 4, 5, 6, 7, 8, 9, 10\\}$, $A = \\{2, 4, 6, 8, 10\\}$, $B = \\{1, 2, 3, 4, 5\\}$. Calcula la cardinalidad de $A \\cap B$.',
+          statement: 'Sea $U = \\{1, 2, 3, 4, 5, 6, 7, 8, 9, 10\\}$, $A = \\{2, 4, 6, 8, 10\\}$, $B = \\{1, 2, 3, 4, 5\\}$. Usa el diagrama de Venn para calcular la cardinalidad de $A \\cap B$.',
           steps: [
             {
               instruction: 'Identifica los elementos que pertenecen tanto a $A$ como a $B$.',
@@ -505,6 +515,16 @@ export default {
           id: 'division-ladder',
           params: { a: 24, b: 36 },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\mathrm{MCD}=\\prod p_i^{\\min(\\alpha_i,\\beta_i)},\\qquad \\mathrm{mcm}=\\prod p_i^{\\max(\\alpha_i,\\beta_i)}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> en la escalera de factores, los exponentes comunes mínimos producen el MCD y los máximos producen el mcm.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: tomar máximos para MCD o mínimos para mcm; la regla es al revés.',
+        },
         {
           type: 'example',
           title: 'Aplicación del mcm: problema de sincronización',
@@ -533,7 +553,7 @@ export default {
           id: 'nat-g1',
           type: 'guided',
           difficulty: 2,
-          statement: 'Calcula el $\\text{MCD}(48, 72)$ usando factorización en primos.',
+          statement: 'Calcula el $\\text{MCD}(48, 72)$ usando factorización en primos y verifica el proceso en la escalera visual.',
           steps: [
             { instruction: 'Factoriza 48.', info: '$48 = 2^4 \\times 3$' },
             { instruction: 'Factoriza 72.', info: '$72 = 2^3 \\times 3^2$' },
@@ -651,6 +671,16 @@ export default {
           id: 'number-line',
           params: { a: -4, b: 6 },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '|a|=\\mathrm{dist}(a,0),\\qquad (+)(-)=-,\\qquad (-)(-)=+' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> el valor absoluto es distancia en la recta numérica; las reglas de signo determinan el sentido de desplazamiento o el signo final del producto.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: interpretar $|a|$ como “siempre negativo” cuando en realidad siempre es no negativo.',
+        },
         { type: 'heading', text: 'Reglas de signos' },
         {
           type: 'table',
@@ -680,7 +710,7 @@ export default {
           id: 'int-g1',
           type: 'guided',
           difficulty: 1,
-          statement: 'Calcula: $(-3) + 7 - (-2)$.',
+          statement: 'Calcula: $(-3) + 7 - (-2)$ apoyándote en los saltos de la recta numérica.',
           steps: [
             { instruction: 'Convierte $-(-2)$ en su equivalente.', info: '$-(-2) = +2$, entonces la expresión es $(-3) + 7 + 2$.' },
             {
@@ -784,6 +814,16 @@ export default {
           id: 'fraction-pie',
           params: { num: 3, den: 4 },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\frac{a}{b}=\\frac{ka}{kb},\\quad \\frac{p}{q}+\\frac{r}{s}=\\frac{ps+rq}{qs},\\quad n\\%=\\frac{n}{100}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> numerador y denominador representan partes/total; el visual de área mantiene la proporción al escalar fracciones equivalentes.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: sumar denominadores directamente en una suma de fracciones.',
+        },
         {
           type: 'text',
           html: 'Para <strong>simplificar</strong> una fracción, se divide numerador y denominador por su <strong>MCD</strong> (Máximo Común Divisor). Para obtener un <strong>denominador común</strong>, se usa el <strong>mcm</strong> (mínimo común múltiplo) de los denominadores. <em>Explora el visualizador para ver cómo cambia la fracción al mover los controles.</em>',
@@ -831,7 +871,7 @@ export default {
           id: 'rat-g1',
           type: 'guided',
           difficulty: 2,
-          statement: 'Calcula $\\dfrac{3}{4} + \\dfrac{1}{6}$. Expresa el resultado como fracción simplificada.',
+          statement: 'Calcula $\\dfrac{3}{4} + \\dfrac{1}{6}$. Usa el visual de fracciones para justificar denominador común y simplificación.',
           steps: [
             { instruction: 'Calcula el mcm de 4 y 6.', info: '$4 = 2^2$, $6 = 2 \\times 3$. $\\text{mcm} = 12$.' },
             {
