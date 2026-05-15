@@ -153,11 +153,26 @@ export default {
           type: 'text',
           html: 'Para resolver sistemas de 3 ecuaciones con 3 incógnitas, se usa <strong>eliminación gaussiana</strong>: reducir el sistema a forma triangular y resolver por sustitución hacia atrás.',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\begin{cases}y=m_1x+b_1\\\\y=m_2x+b_2\\end{cases}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> cada ecuación es una recta; la solución del sistema es su intersección (si existe).',
+        },
+        {
+          type: 'visualization',
+          id: 'system-classifier',
+          params: { m1: 1, b1: 1, m2: -1, b2: 3 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: tratar rectas paralelas como si siempre hubiera solución.',
+        },
       ],
       guidedExercises: [
         {
           id: 'sys-g1', type: 'guided', difficulty: 2,
-          statement: 'Resuelve el sistema: $\\begin{cases}3x + 2y = 12 \\\\ x - y = 1\\end{cases}$',
+          statement: 'Resuelve el sistema: $\\begin{cases}3x + 2y = 12 \\\\ x - y = 1\\end{cases}$ y ubica el tipo de intersección en la visualización.',
           steps: [
             { instruction: 'De la segunda ecuación, despeja $x = 1 + y$.', formula: 'x = 1 + y' },
             { instruction: 'Sustituye en la primera: $3(1+y) + 2y = 12 \\Rightarrow 5y = 9$.', answer: '1.8', placeholder: 'y = ?', tolerance: 0.05 },

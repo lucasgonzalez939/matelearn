@@ -967,13 +967,28 @@ export default {
           type: 'note',
           html: 'Los irracionales más comunes en ingeniería: $\\sqrt{2} \\approx 1.4142$, $\\sqrt{3} \\approx 1.7321$, $\\pi \\approx 3.14159$, $e \\approx 2.71828$.',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\sqrt{n}=\\sqrt{k^2\\cdot m}=k\\sqrt{m}' },
+        {
+          type: 'text',
+          html: '<strong>Qué representa cada término:</strong> el cuadrado perfecto extraíble define la parte fuera de la raíz; el resto queda dentro.',
+        },
+        {
+          type: 'visualization',
+          id: 'radical-area',
+          params: { n: 75 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: distribuir incorrectamente la raíz sobre sumas ($\\sqrt{a+b}\\neq\\sqrt a + \\sqrt b$).',
+        },
       ],
       guidedExercises: [
         {
           id: 'real-g1',
           type: 'guided',
           difficulty: 2,
-          statement: 'Simplifica $\\sqrt{48}$.',
+          statement: 'Simplifica $\\sqrt{48}$ usando la descomposición visual del radicando.',
           steps: [
             { instruction: 'Descompón 48 como cuadrado perfecto por algo.', info: '$48 = 16 \\times 3$' },
             {

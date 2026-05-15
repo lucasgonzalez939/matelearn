@@ -295,11 +295,26 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           steps: ['$-2x \\geq 6$', 'Dividir por $-2$ (se invierte el signo): $x \\leq -3$', 'Solución: $(-\\infty, -3]$'],
           result: '$x \\leq -3$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'x \\lessgtr a \\quad\\Rightarrow\\quad \\text{intervalos en }\\mathbb{R}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> el valor $a$ es frontera; el símbolo determina el lado sombreado; el punto es abierto/cerrado según estricta/no estricta.',
+        },
+        {
+          type: 'visualization',
+          id: 'inequality-interval',
+          params: { relation: '<', boundary: 2 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: no invertir el símbolo al dividir o multiplicar por un número negativo.',
+        },
       ],
       guidedExercises: [
         {
           id: 'ineq-g1', type: 'guided', difficulty: 2,
-          statement: 'Resuelve $5 - 2x > 1$.',
+          statement: 'Resuelve $5 - 2x > 1$ y verifica en la visualización de intervalos que el lado sombreado coincida.',
           steps: [
             { instruction: 'Resta 5 a ambos lados.', formula: '-2x > 1 - 5 = -4' },
             {
@@ -607,11 +622,26 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           result: '$2x(x+2)(x-2)$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'a^2-b^2=(a+b)(a-b),\\quad (a+b)^2=a^2+2ab+b^2,\\quad a^3+b^3=(a+b)(a^2-ab+b^2)' },
+        {
+          type: 'text',
+          html: '<strong>Qué representa cada término:</strong> los productos notables pueden leerse como particiones de área (2D) o descomposición estructural (3D).',
+        },
+        {
+          type: 'visualization',
+          id: 'factorization-model',
+          params: { mode: 'difference', a: 4, b: 2 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: confundir $a^2-b^2$ con $(a-b)^2$.',
+        },
       ],
       guidedExercises: [
         {
           id: 'fact-g1', type: 'guided', difficulty: 2,
-          statement: 'Factoriza $x^2 - 9$.',
+          statement: 'Factoriza $x^2 - 9$ apoyándote en el modelo visual de diferencia de cuadrados.',
           steps: [
             { instruction: 'Reconoce el patrón $a^2 - b^2 = (a+b)(a-b)$. Aquí $a = x$ y $b = ?$', answer: '3', placeholder: 'b = ?' },
             { instruction: 'Escribe la factorización: $(x+3)(x-?)$', answer: '3', placeholder: 'segundo factor = ?' },
@@ -693,11 +723,26 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           result: '$\\dfrac{2x+1}{x(x+1)}$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\frac{P(x)}{Q(x)}\\,,\\; Q(x)\\neq 0' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> los ceros del denominador son valores excluidos del C.V.; toda cancelación válida debe hacerse por factores completos.',
+        },
+        {
+          type: 'visualization',
+          id: 'rational-function',
+          params: { d: 3, numShift: 4 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: cancelar términos en suma/resta en vez de factores multiplicativos.',
+        },
       ],
       guidedExercises: [
         {
           id: 'alfrac-g1', type: 'guided', difficulty: 2,
-          statement: 'Simplifica $\\dfrac{x^2 - x - 6}{x - 3}$.',
+          statement: 'Simplifica $\\dfrac{x^2 - x - 6}{x - 3}$ y contrasta el C.V. con la visualización de valores excluidos.',
           steps: [
             { instruction: 'Factoriza el numerador $x^2 - x - 6$. Busca dos números con suma $-1$ y producto $-6$.', info: 'Los números son $-3$ y $2$, así que $x^2-x-6 = (x-3)(x+2)$.' },
             { instruction: 'Cancela el factor $(x-3)$. El resultado es $x + ?$', answer: '2', placeholder: 'x + ?' },

@@ -73,6 +73,21 @@ export default {
           id: 'angle-types',
           params: { angle: 45 },
         },
+        { type: 'heading', text: 'Bloque visual estándar para $s=r\\theta$' },
+        { type: 'formula', tex: 's=r\\theta\\;(\\theta\\text{ en rad})' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $r$ mide el tamaño de la circunferencia y $\\theta$ el giro; juntos determinan cuánto arco se recorre.',
+        },
+        {
+          type: 'visualization',
+          id: 'arc-length',
+          params: { r: 5, angle: 60 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: usar $\\theta$ en grados sin convertir a radianes.',
+        },
       ],
       guidedExercises: [
         {
@@ -86,7 +101,7 @@ export default {
         },
         {
           id: 'ang-g2', type: 'guided', difficulty: 2,
-          statement: 'Un sector circular tiene radio $r = 10$ cm y ángulo central $\\theta = 72°$. Calcula la longitud del arco.',
+          statement: 'Un sector circular tiene radio $r = 10$ cm y ángulo central $\\theta = 72°$. Calcula la longitud del arco y verifica con la visualización.',
           steps: [
             { instruction: 'Convierte $72°$ a radianes: $72 \\times \\frac{\\pi}{180} = ?$ rad', answer: '1.2566', placeholder: 'θ en rad', tolerance: 0.01 },
             { instruction: 'Calcula $s = r\\theta = 10 \\times 1.2566 = ?$ cm', answer: '12.566', placeholder: 's ≈ ? cm', tolerance: 0.1 },
@@ -274,11 +289,26 @@ export default {
             'Derecha: $2 \\times \\dfrac{1}{2} \\times \\dfrac{\\sqrt{3}}{2} = \\dfrac{\\sqrt{3}}{2}$ ✓',
           ],
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\sin^2\\theta+\\cos^2\\theta=1\\quad\\text{y}\\quad\\tan\\theta=\\frac{\\sin\\theta}{\\cos\\theta}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> en la circunferencia unitaria, $\\cos\\theta$ es la coordenada $x$ y $\\sin\\theta$ la coordenada $y$.',
+        },
+        {
+          type: 'visualization',
+          id: 'identity-circle',
+          params: { angle: 30 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: operar ambos lados de una identidad a la vez sin aislar un lado.',
+        },
       ],
       guidedExercises: [
         {
           id: 'id-g1', type: 'guided', difficulty: 2,
-          statement: 'Si $\\cos\\theta = \\frac{4}{5}$ y $\\theta$ está en el cuadrante IV, calcula $\\sin\\theta$.',
+          statement: 'Si $\\cos\\theta = \\frac{4}{5}$ y $\\theta$ está en el cuadrante IV, calcula $\\sin\\theta$ usando la interpretación gráfica de cuadrantes.',
           steps: [
             { instruction: 'Usa $\\sin^2\\theta + \\cos^2\\theta = 1$: $\\sin^2\\theta = 1 - (4/5)^2 = 1 - 16/25 = ?/25$', answer: '9', placeholder: '? = ?' },
             { instruction: 'En Q4, $\\sin < 0$. $\\sin\\theta = -\\sqrt{9/25} = ?$', answer: '-0.6', placeholder: 'sin θ = ?', tolerance: 0.01 },
@@ -440,11 +470,26 @@ export default {
           ],
           result: '$c \\approx 6.24$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'c^2=a^2+b^2-2ab\\cos C' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> los lados $a,b$ y el ángulo incluido $C$ fijan la geometría del triángulo y determinan el tercer lado $c$.',
+        },
+        {
+          type: 'visualization',
+          id: 'oblique-triangle',
+          params: { a: 7, b: 5, C: 60 },
+        },
+        {
+          type: 'note',
+          html: 'Error típico: elegir ley del seno cuando el caso inicial es LAL/SAS.',
+        },
       ],
       guidedExercises: [
         {
           id: 'obli-g1', type: 'guided', difficulty: 3,
-          statement: 'En un triángulo, $a=8$, $b=6$ y $C=45°$. Calcula $c^2$ usando la ley del coseno.',
+          statement: 'En un triángulo, $a=8$, $b=6$ y $C=45°$. Calcula $c^2$ usando la ley del coseno y contrástalo con el triángulo dinámico.',
           steps: [
             { instruction: 'Aplica $c^2 = a^2 + b^2 - 2ab\\cos C$.', formula: 'c^2 = 64 + 36 - 2(8)(6)\\cos(45°)' },
             { instruction: '$\\cos(45°) = \\frac{\\sqrt{2}}{2} \\approx 0.7071$. Calcula $2(8)(6)(0.7071)$.', answer: '67.88', placeholder: '2ab·cosC ≈ ?', tolerance: 0.5 },

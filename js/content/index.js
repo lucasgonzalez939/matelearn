@@ -5,6 +5,7 @@ import chapter1 from './chapter1.js';
 import chapter2 from './chapter2.js';
 import chapter3 from './chapter3.js';
 import chapter4 from './chapter4.js';
+import FORMULA_GRAPHIC_MATRIX from './formula-graphic-matrix.js';
 
 const PEDAGOGICAL_FLOW = [
   'intro-proposito-practico',
@@ -12,6 +13,14 @@ const PEDAGOGICAL_FLOW = [
   'ejemplo-resuelto',
   'ejercicio-guiado',
   'practica-autonoma-por-dificultad',
+];
+
+const FORMULA_GRAPHIC_PATTERN = [
+  'formula',
+  'significado-de-terminos',
+  'comportamiento-grafico',
+  'ejemplo-numerico',
+  'advertencia-error-comun',
 ];
 
 const PEDAGOGICAL_STANDARD_BY_SECTION = {
@@ -163,8 +172,12 @@ const PEDAGOGICAL_STANDARD_BY_SECTION = {
 
 function withPedagogicalStandard(section) {
   const standard = PEDAGOGICAL_STANDARD_BY_SECTION[section.id];
+  const formulaGraphic = FORMULA_GRAPHIC_MATRIX[section.id];
   if (!standard) {
     throw new Error(`[content] Missing pedagogical standard for section "${section.id}"`);
+  }
+  if (!formulaGraphic) {
+    throw new Error(`[content] Missing formula-graphic matrix entry for section "${section.id}"`);
   }
 
   return {
@@ -172,6 +185,10 @@ function withPedagogicalStandard(section) {
     pedagogy: {
       ...standard,
       didacticFlow: PEDAGOGICAL_FLOW,
+    },
+    formulaGraphic: {
+      ...formulaGraphic,
+      didacticPattern: FORMULA_GRAPHIC_PATTERN,
     },
   };
 }
