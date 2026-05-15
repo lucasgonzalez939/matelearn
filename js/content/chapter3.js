@@ -70,11 +70,21 @@ export default {
             ],
           },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'm=\\frac{y_2-y_1}{x_2-x_1},\\qquad y=mx+b' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> la pendiente $m$ es la razón de cambio entre dos puntos y $b$ fija la intersección con el eje $y$.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: invertir $\\Delta y/\\Delta x$ por $\\Delta x/\\Delta y$ o mezclar signos al pasar entre cuadrantes.',
+        },
       ],
       guidedExercises: [
         {
           id: 'line-g1', type: 'guided', difficulty: 2,
-          statement: 'Halla la pendiente de la recta que pasa por $A(-1, 4)$ y $B(3, -2)$.',
+          statement: 'Halla la pendiente de la recta que pasa por $A(-1, 4)$ y $B(3, -2)$ apoyándote en el plano cartesiano visual.',
           steps: [
             { instruction: 'Aplica la fórmula $m = \\frac{y_2-y_1}{x_2-x_1}$.', formula: 'm = \\frac{-2-4}{3-(-1)} = \\frac{-6}{4}' },
             { instruction: '¿Cuánto es la pendiente $m$ como fracción decimal?', answer: '-1.5', placeholder: 'm = ?', tolerance: 0.05 },

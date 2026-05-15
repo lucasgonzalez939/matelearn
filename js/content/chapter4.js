@@ -168,6 +168,16 @@ export default {
           ],
         },
         { type: 'visualization', id: 'unit-circle', params: { angle: 45 } },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\sin\\theta=\\frac{op}{hip},\\quad \\cos\\theta=\\frac{ady}{hip},\\quad \\tan\\theta=\\frac{\\sin\\theta}{\\cos\\theta}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> en la circunferencia unitaria, $\\cos\\theta$ es la coordenada $x$ y $\\sin\\theta$ la coordenada $y$ del punto asociado al ángulo.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: olvidar el signo por cuadrante al usar valores de referencia.',
+        },
         { type: 'heading', text: 'Signos por cuadrante' },
         {
           type: 'text',
@@ -198,7 +208,7 @@ export default {
         },
         {
           id: 'trig-g2', type: 'guided', difficulty: 2,
-          statement: 'Calcula el valor exacto de $\\sin(150°)$ usando la reducción al primer cuadrante.',
+          statement: 'Calcula el valor exacto de $\\sin(150°)$ usando la reducción al primer cuadrante y verificando su signo en la circunferencia unitaria.',
           steps: [
             { instruction: '$150°$ está en el cuadrante II. El ángulo de referencia es $180° - 150° = ?°$', answer: '30', placeholder: 'ángulo ref. = ?°' },
             { instruction: 'En el cuadrante II, el seno es positivo. $\\sin(150°) = \\sin(30°) = ?$', answer: '0.5', placeholder: 'sin(150°) = ?', tolerance: 0.01 },
@@ -380,6 +390,16 @@ export default {
           ],
         },
         { type: 'visualization', id: 'right-triangle', params: { angle: 35, hyp: 5 } },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'a=c\\cos\\theta,\\quad b=c\\sin\\theta,\\quad c^2=a^2+b^2' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> la hipotenusa escala el triángulo completo y las proyecciones trigonométricas generan cada cateto.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: intercambiar cateto opuesto y adyacente al aplicar seno/coseno.',
+        },
         { type: 'heading', text: 'Ángulos de elevación y depresión' },
         {
           type: 'definition',
@@ -390,7 +410,7 @@ export default {
       guidedExercises: [
         {
           id: 'rt-g1', type: 'guided', difficulty: 2,
-          statement: 'Un triángulo rectángulo tiene $\\theta = 30°$ y cateto adyacente $a = 8$. Halla la hipotenusa $c$.',
+          statement: 'Un triángulo rectángulo tiene $\\theta = 30°$ y cateto adyacente $a = 8$. Halla la hipotenusa $c$ y verifica la relación en el visualizador del triángulo.',
           steps: [
             { instruction: '$\\cos 30° = \\frac{a}{c} = \\frac{8}{c}$. Despeja $c = \\frac{8}{\\cos 30°} = \\frac{8}{\\sqrt{3}/2}$.', formula: 'c = \\frac{16}{\\sqrt{3}} = \\frac{16\\sqrt{3}}{3}' },
             { instruction: '¿Cuánto es $c$ aproximadamente? (usa $\\sqrt{3} \\approx 1.732$)', answer: '9.238', placeholder: 'c ≈ ?', tolerance: 0.1 },

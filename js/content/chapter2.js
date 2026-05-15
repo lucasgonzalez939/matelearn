@@ -66,13 +66,23 @@ export default {
           id: 'function-graph',
           params: { type: 'linear', m: 2, b: -4 },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'ax+b=c\\Rightarrow x=\\frac{c-b}{a},\\qquad y=mx+b' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> en la recta, $m$ controla inclinación y $b$ el corte vertical; resolver $ax+b=c$ equivale a ubicar el valor de $x$ que balancea ambos miembros.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: mover términos de lado sin cambiar correctamente el signo o dividir por un coeficiente equivocado.',
+        },
       ],
       guidedExercises: [
         {
           id: 'lin-g1',
           type: 'guided',
           difficulty: 1,
-          statement: 'Resuelve: $5x - 3 = 17$.',
+          statement: 'Resuelve: $5x - 3 = 17$ y verifica en la gráfica lineal dónde se ubica el valor de $x$ obtenido.',
           steps: [
             { instruction: 'Suma 3 a ambos lados de la ecuación.', formula: '5x - 3 + 3 = 17 + 3 \\Rightarrow 5x = 20' },
             { instruction: 'Divide ambos lados por 5.', formula: 'x = \\frac{20}{5}', answer: '4', placeholder: 'x = ?' },
@@ -855,11 +865,21 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           id: 'geometry-gallery',
           params: { defaultShape: 'trapezoid' },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\text{Elegir fórmula}\\Rightarrow\\text{identificar tipo de representación }(\\text{algebraica/geométrica})' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> cada problema exige primero clasificar el modelo (exponentes, polinomios, racionales o área) y luego mapearlo al visual apropiado.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: usar una fórmula de otra familia temática sin validar unidades, restricciones o tipo de figura.',
+        },
       ],
       guidedExercises: [
         {
           id: 'exam-g1', type: 'guided', difficulty: 3,
-          statement: 'Simplifica $\\dfrac{x^n\\cdot x^{n+2}}{x^{2n-1}}$ usando leyes de exponentes y luego evalúa para $x=2$.',
+          statement: 'Simplifica $\\dfrac{x^n\\cdot x^{n+2}}{x^{2n-1}}$ usando leyes de exponentes y contrasta en la galería visual que este ejercicio pertenece al bloque algebraico (no geométrico).',
           steps: [
             { instruction: 'Suma exponentes en el numerador y resta el del denominador.', formula: 'x^{n+n+2-(2n-1)} = x^3' },
             { instruction: '¿Cuál es el exponente final?', answer: '3', placeholder: 'exponente = ?', hint: 'Simplifica $n+n+2-(2n-1)$.' },
