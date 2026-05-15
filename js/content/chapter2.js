@@ -427,6 +427,15 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
         },
         {
+          type: 'text',
+          html: 'Interpretación geométrica clave: $(a+b)^2$ representa el área de un cuadrado de lado $(a+b)$. Al dividirlo en regiones, aparece un cuadrado $a^2$, otro $b^2$ y dos rectángulos $ab$, por eso la expansión es $a^2 + 2ab + b^2$.',
+        },
+        {
+          type: 'visualization',
+          id: 'binomial-square',
+          params: { a: 4, b: 2 },
+        },
+        {
           type: 'example',
           title: 'Ejemplo: Reconocer y aplicar $(3x-2)^2$',
           problem: '$(3x-2)^2$',

@@ -17,6 +17,7 @@ const vizRegistry = {
   'fraction-pie':     initFractionPie,
   'division-ladder':  initDivisionLadder,
   'function-graph':   initFunctionGraph,
+  'binomial-square':  initBinomialSquare,
   'angle-types':      initAngleTypes,
 };
 
@@ -1233,6 +1234,112 @@ function initFunctionGraph(container, params) {
       draw();
     });
   });
+  draw();
+}
+
+// ─── 12. Angle Types ─────────────────────────────────────────────────────
+function initBinomialSquare(container, params) {
+  const W = 460, H = 340;
+  let a = params.a ?? 4, b = params.b ?? 2;
+
+  container.innerHTML = `
+    <div class="viz-title">Cuadrado de binomio como suma de áreas</div>
+    <div class="viz-canvas-wrap"><canvas class="bs-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('a', 1, 10, a, 0.5)}
+      ${sliderRow('b', 1, 10, b, 0.5)}
+    </div>
+    <div class="viz-output bs-out"></div>`;
+
+  const canvas = container.querySelector('.bs-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    const side = a + b;
+    const maxDraw = Math.min(W - 110, H - 90);
+    const scale = maxDraw / side;
+    const sA = a * scale;
+    const sB = b * scale;
+
+    const x0 = (W - (sA + sB)) / 2;
+    const y0 = (H - (sA + sB)) / 2 + 8;
+    const totalSide = sA + sB;
+
+    // Outer square (a+b)^2
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(x0, y0, totalSide, totalSide);
+
+    // Partition lines
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x0 + sA, y0);
+    ctx.lineTo(x0 + sA, y0 + totalSide);
+    ctx.moveTo(x0, y0 + sA);
+    ctx.lineTo(x0 + totalSide, y0 + sA);
+    ctx.stroke();
+
+    // Regions: a², ab, ab, b²
+    ctx.fillStyle = '#bfdbfe';
+    ctx.fillRect(x0, y0, sA, sA); // a²
+    ctx.fillStyle = '#c7d2fe';
+    ctx.fillRect(x0 + sA, y0, sB, sA); // ab
+    ctx.fillStyle = '#c7d2fe';
+    ctx.fillRect(x0, y0 + sA, sA, sB); // ab
+    ctx.fillStyle = '#fbcfe8';
+    ctx.fillRect(x0 + sA, y0 + sA, sB, sB); // b²
+
+    // Region labels
+    ctx.fillStyle = '#1e3a8a';
+    ctx.font = 'bold 13px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('a²', x0 + sA / 2, y0 + sA / 2 + 4);
+    ctx.fillStyle = '#4338ca';
+    ctx.fillText('ab', x0 + sA + sB / 2, y0 + sA / 2 + 4);
+    ctx.fillText('ab', x0 + sA / 2, y0 + sA + sB / 2 + 4);
+    ctx.fillStyle = '#9d174d';
+    ctx.fillText('b²', x0 + sA + sB / 2, y0 + sA + sB / 2 + 4);
+
+    // Side labels
+    ctx.fillStyle = '#334155';
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillText('a', x0 + sA / 2, y0 - 8);
+    ctx.fillText('b', x0 + sA + sB / 2, y0 - 8);
+    ctx.save();
+    ctx.translate(x0 - 10, y0 + sA / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('a', 0, 0);
+    ctx.restore();
+    ctx.save();
+    ctx.translate(x0 - 10, y0 + sA + sB / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('b', 0, 0);
+    ctx.restore();
+
+    const a2 = a * a;
+    const b2 = b * b;
+    const twoab = 2 * a * b;
+    const total = side * side;
+
+    container.querySelector('.bs-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Área total:</span><span class="viz-output-val">(${a}+${b})² = ${total.toFixed(2)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Descomposición:</span><span class="viz-output-val">a² + 2ab + b² = ${a2.toFixed(2)} + ${twoab.toFixed(2)} + ${b2.toFixed(2)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Identidad:</span><span class="viz-output-val">(a+b)² = a² + 2ab + b²</span></div>`;
+  }
+
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value;
+      if (i === 0) a = parseFloat(s.value);
+      else b = parseFloat(s.value);
+      draw();
+    });
+  });
+
   draw();
 }
 
