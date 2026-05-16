@@ -70,11 +70,21 @@ export default {
             ],
           },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'm=\\frac{y_2-y_1}{x_2-x_1},\\qquad y=mx+b' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> la pendiente $m$ es la razón de cambio entre dos puntos y $b$ fija la intersección con el eje $y$.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: invertir $\\Delta y/\\Delta x$ por $\\Delta x/\\Delta y$ o mezclar signos al pasar entre cuadrantes.',
+        },
       ],
       guidedExercises: [
         {
           id: 'line-g1', type: 'guided', difficulty: 2,
-          statement: 'Halla la pendiente de la recta que pasa por $A(-1, 4)$ y $B(3, -2)$.',
+          statement: 'Halla la pendiente de la recta que pasa por $A(-1, 4)$ y $B(3, -2)$ apoyándote en el plano cartesiano visual.',
           steps: [
             { instruction: 'Aplica la fórmula $m = \\frac{y_2-y_1}{x_2-x_1}$.', formula: 'm = \\frac{-2-4}{3-(-1)} = \\frac{-6}{4}' },
             { instruction: '¿Cuánto es la pendiente $m$ como fracción decimal?', answer: '-1.5', placeholder: 'm = ?', tolerance: 0.05 },
@@ -153,11 +163,26 @@ export default {
           type: 'text',
           html: 'Para resolver sistemas de 3 ecuaciones con 3 incógnitas, se usa <strong>eliminación gaussiana</strong>: reducir el sistema a forma triangular y resolver por sustitución hacia atrás.',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\begin{cases}y=m_1x+b_1\\\\y=m_2x+b_2\\end{cases}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> cada ecuación es una recta; la solución del sistema es su intersección (si existe).',
+        },
+        {
+          type: 'visualization',
+          id: 'system-classifier',
+          params: { m1: 1, b1: 1, m2: -1, b2: 3 },
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: tratar rectas paralelas como si siempre hubiera solución.',
+        },
       ],
       guidedExercises: [
         {
           id: 'sys-g1', type: 'guided', difficulty: 2,
-          statement: 'Resuelve el sistema: $\\begin{cases}3x + 2y = 12 \\\\ x - y = 1\\end{cases}$',
+          statement: 'Resuelve el sistema: $\\begin{cases}3x + 2y = 12 \\\\ x - y = 1\\end{cases}$ y ubica el tipo de intersección en la visualización.',
           steps: [
             { instruction: 'De la segunda ecuación, despeja $x = 1 + y$.', formula: 'x = 1 + y' },
             { instruction: 'Sustituye en la primera: $3(1+y) + 2y = 12 \\Rightarrow 5y = 9$.', answer: '1.8', placeholder: 'y = ?', tolerance: 0.05 },
@@ -210,12 +235,22 @@ export default {
           ],
           result: 'Centro $(2,-3)$, radio $r=4$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '(x-h)^2+(y-k)^2=r^2' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $(h,k)$ se ve como el punto central y $r$ como la distancia constante al borde de la circunferencia.',
+        },
         { type: 'visualization', id: 'conic-section', params: { conicType: 'circle', r: 3 } },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: leer mal los signos y mover el centro al cuadrante incorrecto.',
+        },
       ],
       guidedExercises: [
         {
           id: 'circ-g1', type: 'guided', difficulty: 2,
-          statement: 'Determina el radio de la circunferencia $(x+1)^2 + (y-2)^2 = 25$.',
+          statement: 'Determina el radio de la circunferencia $(x+1)^2 + (y-2)^2 = 25$ y ubica centro/radio en la visualización.',
           steps: [
             { instruction: 'La ecuación ya está en forma canónica $(x-h)^2+(y-k)^2=r^2$. Identifica $r^2 = 25$.', answer: '5', placeholder: 'r = ?' },
           ],
@@ -271,6 +306,12 @@ export default {
             ['Excentricidad', '$e = c/a < 1$', '$e = c/b < 1$'],
           ],
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=1,\\; c^2=a^2-b^2,\\; e=\\frac{c}{a}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $a,b$ controlan semiejes; $c$ fija la posición de focos; $e$ mide cuán “alargada” se ve la elipse.',
+        },
         { type: 'visualization', id: 'conic-section', params: { conicType: 'ellipse', a: 4, b: 2 } },
         {
           type: 'example',
@@ -283,11 +324,15 @@ export default {
             'Vértices: $(\\pm 5, 0)$; focos: $(\\pm 4, 0)$; excentricidad: $e = 4/5 = 0.8$',
           ],
         },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: intercambiar $a$ y $b$ sin revisar cuál denominador es mayor.',
+        },
       ],
       guidedExercises: [
         {
           id: 'ellipse-g1', type: 'guided', difficulty: 3,
-          statement: 'Para la elipse $\\dfrac{x^2}{16} + \\dfrac{y^2}{7} = 1$, calcula la distancia focal $c$.',
+          statement: 'Para la elipse $\\dfrac{x^2}{16} + \\dfrac{y^2}{7} = 1$, calcula la distancia focal $c$ y compárala con la posición de focos del visualizador.',
           steps: [
             { instruction: 'Identifica $a^2=16$, $b^2=7$. Calcula $c^2 = a^2-b^2$.', answer: '9', placeholder: 'c² = ?' },
             { instruction: '¿Cuánto es $c = \\sqrt{9}$?', answer: '3', placeholder: 'c = ?' },
@@ -326,12 +371,22 @@ export default {
           text: '$$\\frac{y^2}{a^2} - \\frac{x^2}{b^2} = 1$$ Focos en $(0, \\pm c)$.',
         },
         { type: 'definition', term: 'Asíntotas', text: 'Las asíntotas de la hipérbola $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=1$ son $y = \\pm\\dfrac{b}{a}x$.' },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\frac{x^2}{a^2}-\\frac{y^2}{b^2}=1,\\; c^2=a^2+b^2,\\; y=\\pm\\frac{b}{a}x' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $a$ define la apertura horizontal inicial, $b/a$ la inclinación de las asíntotas y $c$ la posición de focos.',
+        },
         { type: 'visualization', id: 'conic-section', params: { conicType: 'hyperbola', a: 3, b: 2 } },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: confundir focos con vértices o asumir que las ramas tocan las asíntotas.',
+        },
       ],
       guidedExercises: [
         {
           id: 'hyp-g1', type: 'guided', difficulty: 3,
-          statement: 'Para $\\dfrac{x^2}{9} - \\dfrac{y^2}{16} = 1$, halla $c$.',
+          statement: 'Para $\\dfrac{x^2}{9} - \\dfrac{y^2}{16} = 1$, halla $c$ y verifica cómo cambian ramas/asíntotas en la visualización.',
           steps: [
             { instruction: '$c^2 = a^2 + b^2 = 9 + 16 = ?$', answer: '25', placeholder: 'c² = ?' },
             { instruction: '$c = ?$', answer: '5', placeholder: 'c = ?' },
@@ -377,12 +432,22 @@ export default {
             'Foco: $(0, 2)$', 'Directriz: $y = -2$', 'Vértice: $(0,0)$',
           ],
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '(x-h)^2=4p(y-k)\\quad\\text{o}\\quad(y-k)^2=4p(x-h)' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $p$ es la distancia del vértice al foco y también del vértice a la directriz.',
+        },
         { type: 'visualization', id: 'conic-section', params: { conicType: 'parabola', p: 2 } },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: cambiar la orientación de la parábola por confundir si el cuadrado está en $x$ o en $y$.',
+        },
       ],
       guidedExercises: [
         {
           id: 'par-g1', type: 'guided', difficulty: 2,
-          statement: 'Para la parábola $y^2 = 12x$, halla el foco.',
+          statement: 'Para la parábola $y^2 = 12x$, halla el foco y confirma la orientación en la visualización.',
           steps: [
             { instruction: '$4p = 12 \\Rightarrow p = ?$', answer: '3', placeholder: 'p = ?' },
             { instruction: 'Foco en $(p, 0) = (?, 0)$.', answer: '3', placeholder: 'foco x = ?' },

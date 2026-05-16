@@ -17,7 +17,16 @@ const vizRegistry = {
   'fraction-pie':     initFractionPie,
   'division-ladder':  initDivisionLadder,
   'function-graph':   initFunctionGraph,
+  'binomial-square':  initBinomialSquare,
   'angle-types':      initAngleTypes,
+  'inequality-interval': initInequalityInterval,
+  'system-classifier': initSystemClassifier,
+  'arc-length': initArcLength,
+  'identity-circle': initIdentityCircle,
+  'oblique-triangle': initObliqueTriangle,
+  'radical-area': initRadicalArea,
+  'rational-function': initRationalFunction,
+  'factorization-model': initFactorizationModel,
 };
 
 export function renderVisualization(container, id, params) {
@@ -1237,6 +1246,112 @@ function initFunctionGraph(container, params) {
 }
 
 // ─── 12. Angle Types ─────────────────────────────────────────────────────
+function initBinomialSquare(container, params) {
+  const W = 460, H = 340;
+  let a = params.a ?? 4, b = params.b ?? 2;
+
+  container.innerHTML = `
+    <div class="viz-title">Cuadrado de binomio como suma de áreas</div>
+    <div class="viz-canvas-wrap"><canvas class="bs-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('a', 1, 10, a, 0.5)}
+      ${sliderRow('b', 1, 10, b, 0.5)}
+    </div>
+    <div class="viz-output bs-out"></div>`;
+
+  const canvas = container.querySelector('.bs-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    const side = a + b;
+    const maxDraw = Math.min(W - 110, H - 90);
+    const scale = maxDraw / side;
+    const sA = a * scale;
+    const sB = b * scale;
+
+    const x0 = (W - (sA + sB)) / 2;
+    const y0 = (H - (sA + sB)) / 2 + 8;
+    const totalSide = sA + sB;
+
+    // Outer square (a+b)^2
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2.5;
+    ctx.strokeRect(x0, y0, totalSide, totalSide);
+
+    // Partition lines
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(x0 + sA, y0);
+    ctx.lineTo(x0 + sA, y0 + totalSide);
+    ctx.moveTo(x0, y0 + sA);
+    ctx.lineTo(x0 + totalSide, y0 + sA);
+    ctx.stroke();
+
+    // Regions: a², ab, ab, b²
+    ctx.fillStyle = '#bfdbfe';
+    ctx.fillRect(x0, y0, sA, sA); // a²
+    ctx.fillStyle = '#c7d2fe';
+    ctx.fillRect(x0 + sA, y0, sB, sA); // ab
+    ctx.fillStyle = '#c7d2fe';
+    ctx.fillRect(x0, y0 + sA, sA, sB); // ab
+    ctx.fillStyle = '#fbcfe8';
+    ctx.fillRect(x0 + sA, y0 + sA, sB, sB); // b²
+
+    // Region labels
+    ctx.fillStyle = '#1e3a8a';
+    ctx.font = 'bold 13px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('a²', x0 + sA / 2, y0 + sA / 2 + 4);
+    ctx.fillStyle = '#4338ca';
+    ctx.fillText('ab', x0 + sA + sB / 2, y0 + sA / 2 + 4);
+    ctx.fillText('ab', x0 + sA / 2, y0 + sA + sB / 2 + 4);
+    ctx.fillStyle = '#9d174d';
+    ctx.fillText('b²', x0 + sA + sB / 2, y0 + sA + sB / 2 + 4);
+
+    // Side labels
+    ctx.fillStyle = '#334155';
+    ctx.font = 'bold 12px system-ui';
+    ctx.fillText('a', x0 + sA / 2, y0 - 8);
+    ctx.fillText('b', x0 + sA + sB / 2, y0 - 8);
+    ctx.save();
+    ctx.translate(x0 - 10, y0 + sA / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('a', 0, 0);
+    ctx.restore();
+    ctx.save();
+    ctx.translate(x0 - 10, y0 + sA + sB / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('b', 0, 0);
+    ctx.restore();
+
+    const a2 = a * a;
+    const b2 = b * b;
+    const twoab = 2 * a * b;
+    const total = side * side;
+
+    container.querySelector('.bs-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Área total:</span><span class="viz-output-val">(${a}+${b})² = ${total.toFixed(2)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Descomposición:</span><span class="viz-output-val">a² + 2ab + b² = ${a2.toFixed(2)} + ${twoab.toFixed(2)} + ${b2.toFixed(2)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Identidad:</span><span class="viz-output-val">(a+b)² = a² + 2ab + b²</span></div>`;
+  }
+
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value;
+      if (i === 0) a = parseFloat(s.value);
+      else b = parseFloat(s.value);
+      draw();
+    });
+  });
+
+  draw();
+}
+
+// ─── 12. Angle Types ─────────────────────────────────────────────────────
 function initAngleTypes(container, params) {
   const W = 400, H = 280;
   container.innerHTML = `
@@ -1298,6 +1413,538 @@ function initAngleTypes(container, params) {
 
   const s=container.querySelector('input[type="range"]');
   s.addEventListener('input',()=>{ angle=parseInt(s.value); s.nextElementSibling.textContent=angle+'°'; draw(); });
+  draw();
+}
+
+// ─── 14. Inequalities on Number Line ───────────────────────────────────────
+function initInequalityInterval(container, params) {
+  const W = 460, H = 170;
+  let boundary = params.boundary ?? 2;
+  let relation = params.relation ?? '<';
+  let closed = relation === '<=' || relation === '>=';
+
+  container.innerHTML = `
+    <div class="viz-title">Inecuaciones en la recta numérica</div>
+    <div class="viz-canvas-wrap"><canvas class="ii-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('Límite', -10, 10, boundary, 1)}
+      <div class="viz-control-group">
+        <label>Relación</label>
+        <select class="ii-rel">
+          ${['<','<=','>','>='].map(r => `<option value="${r}" ${r===relation?'selected':''}>x ${r} ${boundary}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="viz-output ii-out"></div>`;
+
+  const canvas = container.querySelector('.ii-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+  const relSelect = container.querySelector('.ii-rel');
+
+  function draw() {
+    closed = relation === '<=' || relation === '>=';
+    ctx.clearRect(0, 0, W, H);
+    const pad = 40, y = H / 2;
+    const scale = (W - 2 * pad) / 20;
+    const toX = v => pad + (v + 10) * scale;
+
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(W - pad, y); ctx.stroke();
+    for (let i = -10; i <= 10; i++) {
+      const x = toX(i);
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = i === 0 ? 2 : 1;
+      ctx.beginPath(); ctx.moveTo(x, y - 5); ctx.lineTo(x, y + 5); ctx.stroke();
+      if (i % 2 === 0) {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(i, x, y + 18);
+      }
+    }
+
+    const bx = toX(boundary);
+    const shadeStart = relation.includes('<') ? pad : bx;
+    const shadeEnd = relation.includes('<') ? bx : (W - pad);
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(shadeStart, y); ctx.lineTo(shadeEnd, y); ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(bx, y, 7, 0, Math.PI * 2);
+    ctx.fillStyle = closed ? '#2563eb' : '#ffffff';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#2563eb';
+    ctx.stroke();
+
+    const safeRelation = ['<', '<=', '>', '>='].includes(relation) ? relation : '<';
+    const interval = safeRelation === '<' ? `(-∞, ${boundary})`
+      : safeRelation === '<=' ? `(-∞, ${boundary}]`
+      : safeRelation === '>' ? `(${boundary}, +∞)`
+      : `[${boundary}, +∞)`;
+    container.querySelector('.ii-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Inecuación:</span><span class="viz-output-val">x ${safeRelation} ${boundary}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Intervalo:</span><span class="viz-output-val">${interval}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Advertencia:</span><span class="viz-output-val">Si multiplicas por negativo, se invierte el signo</span></div>`;
+  }
+
+  container.querySelector('input[type="range"]').addEventListener('input', e => {
+    boundary = parseInt(e.target.value);
+    e.target.nextElementSibling.textContent = boundary;
+    relSelect.innerHTML = ['<', '<=', '>', '>='].map(r => `<option value="${r}" ${r===relation?'selected':''}>x ${r} ${boundary}</option>`).join('');
+    draw();
+  });
+  relSelect.addEventListener('change', () => { relation = relSelect.value; draw(); });
+  draw();
+}
+
+// ─── 15. System Classifier ─────────────────────────────────────────────────
+function initSystemClassifier(container, params) {
+  const W = 460, H = 340;
+  let m1 = params.m1 ?? 1, b1 = params.b1 ?? 1;
+  let m2 = params.m2 ?? -1, b2 = params.b2 ?? 3;
+
+  container.innerHTML = `
+    <div class="viz-title">Clasificación de sistemas lineales</div>
+    <div class="viz-canvas-wrap"><canvas class="sc-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('m₁', -4, 4, m1, 0.25)}
+      ${sliderRow('b₁', -6, 6, b1, 0.5)}
+      ${sliderRow('m₂', -4, 4, m2, 0.25)}
+      ${sliderRow('b₂', -6, 6, b2, 0.5)}
+    </div>
+    <div class="viz-output sc-out"></div>`;
+
+  const canvas = container.querySelector('.sc-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+  const pad = 40, range = 8;
+  const sx = (W - 2 * pad) / (2 * range), sy = (H - 2 * pad) / (2 * range);
+  const toX = x => W / 2 + x * sx;
+  const toY = y => H / 2 - y * sy;
+
+  function drawGrid() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 1;
+    for (let i = -range; i <= range; i++) {
+      ctx.beginPath(); ctx.moveTo(toX(i), pad); ctx.lineTo(toX(i), H - pad); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(pad, toY(i)); ctx.lineTo(W - pad, toY(i)); ctx.stroke();
+    }
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(pad, toY(0)); ctx.lineTo(W - pad, toY(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(toX(0), pad); ctx.lineTo(toX(0), H - pad); ctx.stroke();
+  }
+
+  function drawLine(m, b, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    for (let x = -range; x <= range; x += 0.05) {
+      const y = m * x + b;
+      x === -range ? ctx.moveTo(toX(x), toY(y)) : ctx.lineTo(toX(x), toY(y));
+    }
+    ctx.stroke();
+  }
+
+  function draw() {
+    drawGrid();
+    drawLine(m1, b1, '#2563eb');
+    drawLine(m2, b2, '#dc2626');
+
+    const sameSlope = Math.abs(m1 - m2) < 0.0001;
+    const sameIntercept = Math.abs(b1 - b2) < 0.0001;
+    let type = 'Compatible determinado';
+    let detail = 'Una única intersección.';
+    if (sameSlope && sameIntercept) {
+      type = 'Compatible indeterminado';
+      detail = 'Rectas coincidentes: infinitas soluciones.';
+    } else if (sameSlope) {
+      type = 'Incompatible';
+      detail = 'Rectas paralelas: sin solución.';
+    } else {
+      const x = (b2 - b1) / (m1 - m2);
+      const y = m1 * x + b1;
+      if (Math.abs(x) <= range && Math.abs(y) <= range) {
+        ctx.beginPath(); ctx.arc(toX(x), toY(y), 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#16a34a'; ctx.fill();
+      }
+      detail = `Intersección aproximada: (${x.toFixed(2)}, ${y.toFixed(2)}).`;
+    }
+
+    container.querySelector('.sc-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Sistema:</span><span class="viz-output-val">y=${m1}x+${b1} y y=${m2}x+${b2}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Tipo:</span><span class="viz-output-val">${type}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Interpretación:</span><span class="viz-output-val">${detail}</span></div>`;
+  }
+
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value;
+      const v = parseFloat(s.value);
+      if (i === 0) m1 = v;
+      if (i === 1) b1 = v;
+      if (i === 2) m2 = v;
+      if (i === 3) b2 = v;
+      draw();
+    });
+  });
+  draw();
+}
+
+// ─── 16. Arc Length ────────────────────────────────────────────────────────
+function initArcLength(container, params) {
+  const W = 420, H = 290;
+  let r = params.r ?? 5;
+  let angle = params.angle ?? 60;
+
+  container.innerHTML = `
+    <div class="viz-title">Longitud de arco: s = rθ</div>
+    <div class="viz-canvas-wrap"><canvas class="al-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('Radio r', 1, 12, r, 0.5)}
+      ${sliderRow('Ángulo θ (°)', 0, 360, angle, 1)}
+    </div>
+    <div class="viz-output al-out"></div>`;
+
+  const canvas = container.querySelector('.al-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2 + 12;
+    const drawR = Math.min(W, H) / 2 - 50;
+    const rad = angle * Math.PI / 180;
+
+    ctx.beginPath(); ctx.arc(cx, cy, drawR, 0, Math.PI * 2);
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.6; ctx.stroke();
+
+    const px = cx + drawR * Math.cos(rad);
+    const py = cy - drawR * Math.sin(rad);
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + drawR, cy); ctx.strokeStyle = '#334155'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2.4; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, drawR, 0, -rad, true); ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 4; ctx.stroke();
+
+    const s = r * rad;
+    container.querySelector('.al-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Conversión:</span><span class="viz-output-val">${angle}° = ${rad.toFixed(4)} rad</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Longitud:</span><span class="viz-output-val">s = ${r} × ${rad.toFixed(4)} = ${s.toFixed(4)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Error común:</span><span class="viz-output-val">No usar grados directos en s=rθ</span></div>`;
+  }
+
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value + (i === 1 ? '°' : '');
+      if (i === 0) r = parseFloat(s.value);
+      else angle = parseInt(s.value);
+      draw();
+    });
+  });
+  draw();
+}
+
+// ─── 17. Identity Circle ───────────────────────────────────────────────────
+function initIdentityCircle(container, params) {
+  const W = 460, H = 320;
+  let angle = params.angle ?? 30;
+  container.innerHTML = `
+    <div class="viz-title">Identidades trigonométricas en circunferencia unitaria</div>
+    <div class="viz-canvas-wrap"><canvas class="ic-canvas"></canvas></div>
+    <div class="viz-controls">${sliderRow('Ángulo θ (°)', 0, 360, angle, 1)}</div>
+    <div class="viz-output ic-out"></div>`;
+
+  const canvas = container.querySelector('.ic-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2 + 10, r = 110;
+    const rad = angle * Math.PI / 180;
+    const x = Math.cos(rad), y = Math.sin(rad);
+    const px = cx + r * x, py = cy - r * y;
+
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.strokeStyle = '#94a3b8'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2.2; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, cy); ctx.strokeStyle = '#dc2626'; ctx.setLineDash([4, 3]); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, cy); ctx.strokeStyle = '#16a34a'; ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI * 2); ctx.fillStyle = '#2563eb'; ctx.fill();
+
+    const sin2 = y * y;
+    const cos2 = x * x;
+    const tan = Math.abs(x) < 1e-5 ? '∞' : (y / x).toFixed(4);
+    container.querySelector('.ic-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">sin²θ + cos²θ:</span><span class="viz-output-val">${sin2.toFixed(4)} + ${cos2.toFixed(4)} = ${(sin2 + cos2).toFixed(4)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">tanθ = sinθ/cosθ:</span><span class="viz-output-val">${tan}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Advertencia:</span><span class="viz-output-val">tanθ no existe cuando cosθ = 0</span></div>`;
+  }
+
+  container.querySelector('input[type="range"]').addEventListener('input', e => {
+    angle = parseInt(e.target.value);
+    e.target.nextElementSibling.textContent = `${angle}°`;
+    draw();
+  });
+  draw();
+}
+
+// ─── 18. Oblique Triangle ──────────────────────────────────────────────────
+function initObliqueTriangle(container, params) {
+  const W = 460, H = 320;
+  let a = params.a ?? 7;
+  let b = params.b ?? 5;
+  let C = params.C ?? 60;
+
+  container.innerHTML = `
+    <div class="viz-title">Triángulo oblicuángulo dinámico (ley del coseno)</div>
+    <div class="viz-canvas-wrap"><canvas class="ot-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('Lado a', 2, 12, a, 0.5)}
+      ${sliderRow('Lado b', 2, 12, b, 0.5)}
+      ${sliderRow('Ángulo C (°)', 20, 150, C, 1)}
+    </div>
+    <div class="viz-output ot-out"></div>`;
+
+  const canvas = container.querySelector('.ot-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const rad = C * Math.PI / 180;
+    const c2 = a * a + b * b - 2 * a * b * Math.cos(rad);
+    const c = Math.sqrt(Math.max(c2, 0));
+    const scale = Math.min((W - 100) / Math.max(a, b, c), (H - 80) / Math.max(a, b, c)) * 0.9;
+    const Ax = 90, Ay = H - 60;
+    const Bx = Ax + b * scale, By = Ay;
+    const Cx = Ax + a * scale * Math.cos(rad), Cy = Ay - a * scale * Math.sin(rad);
+
+    ctx.beginPath(); ctx.moveTo(Ax, Ay); ctx.lineTo(Bx, By); ctx.lineTo(Cx, Cy); ctx.closePath();
+    ctx.fillStyle = '#fef3c7'; ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 2.2; ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#374151'; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(`b=${b.toFixed(1)}`, (Ax + Bx) / 2, Ay + 18);
+    ctx.fillText(`a=${a.toFixed(1)}`, (Ax + Cx) / 2 - 5, (Ay + Cy) / 2);
+    ctx.fillText(`c=${c.toFixed(2)}`, (Bx + Cx) / 2 + 8, (By + Cy) / 2);
+
+    const area = 0.5 * a * b * Math.sin(rad);
+    container.querySelector('.ot-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Ley del coseno:</span><span class="viz-output-val">c² = a²+b²-2ab·cosC = ${c2.toFixed(4)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Lado c:</span><span class="viz-output-val">${c.toFixed(4)}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Área (1/2ab·senC):</span><span class="viz-output-val">${area.toFixed(4)}</span></div>`;
+  }
+
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value + (i === 2 ? '°' : '');
+      const v = parseFloat(s.value);
+      if (i === 0) a = v;
+      if (i === 1) b = v;
+      if (i === 2) C = v;
+      draw();
+    });
+  });
+  draw();
+}
+
+// ─── 19. Radical Area ──────────────────────────────────────────────────────
+function initRadicalArea(container, params) {
+  const W = 460, H = 260;
+  let n = params.n ?? 75;
+  container.innerHTML = `
+    <div class="viz-title">Radicales como descomposición de área</div>
+    <div class="viz-canvas-wrap"><canvas class="ra-canvas"></canvas></div>
+    <div class="viz-controls">${sliderRow('Radicando n', 2, 120, n, 1)}</div>
+    <div class="viz-output ra-out"></div>`;
+
+  const canvas = container.querySelector('.ra-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function largestSquareFactor(v) {
+    let best = 1;
+    for (let i = 1; i * i <= v; i++) if (v % (i * i) === 0) best = i * i;
+    return best;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const sq = largestSquareFactor(n);
+    const k = Math.sqrt(sq);
+    const rem = n / sq;
+    const side = Math.min(W - 120, H - 70);
+    const x = 50, y = 35;
+
+    ctx.fillStyle = '#dbeafe';
+    ctx.fillRect(x, y, side, side);
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, side, side);
+    const inner = side * Math.sqrt(sq / n);
+    ctx.fillStyle = '#bfdbfe';
+    ctx.fillRect(x, y, inner, inner);
+    ctx.strokeStyle = '#1d4ed8';
+    ctx.strokeRect(x, y, inner, inner);
+
+    container.querySelector('.ra-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Descomposición:</span><span class="viz-output-val">${n} = ${sq}·${rem}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Simplificación:</span><span class="viz-output-val">√${n} = √${sq}·√${rem} = ${k}√${rem}</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Racionalización ejemplo:</span><span class="viz-output-val">3/√2 = (3√2)/2</span></div>`;
+  }
+
+  container.querySelector('input[type="range"]').addEventListener('input', e => {
+    n = parseInt(e.target.value);
+    e.target.nextElementSibling.textContent = n;
+    draw();
+  });
+  draw();
+}
+
+// ─── 20. Rational Function Domain ──────────────────────────────────────────
+function initRationalFunction(container, params) {
+  const W = 460, H = 260;
+  let d = params.d ?? 3;
+  let numShift = params.numShift ?? 4;
+
+  container.innerHTML = `
+    <div class="viz-title">Fracción algebraica: C.V. y valores excluidos</div>
+    <div class="viz-canvas-wrap"><canvas class="rf-canvas"></canvas></div>
+    <div class="viz-controls">
+      ${sliderRow('d (x²-d²)', 1, 8, d, 1)}
+      ${sliderRow('k (x+k)', -6, 6, numShift, 1)}
+    </div>
+    <div class="viz-output rf-out"></div>`;
+
+  const canvas = container.querySelector('.rf-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const pad = 40, y = H / 2;
+    const scale = (W - 2 * pad) / 20;
+    const toX = v => pad + (v + 10) * scale;
+    const x1 = -d, x2 = d;
+
+    ctx.strokeStyle = '#334155'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(W - pad, y); ctx.stroke();
+    for (let i = -10; i <= 10; i++) {
+      const x = toX(i);
+      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4); ctx.stroke();
+      if (i % 2 === 0) { ctx.fillStyle = '#64748b'; ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(i, x, y + 18); }
+    }
+    [x1, x2].forEach(v => {
+      const x = toX(v);
+      ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#dc2626'; ctx.fillText(`x=${v}`, x, y - 14);
+    });
+
+    container.querySelector('.rf-out').innerHTML = `
+      <div class="viz-output-item"><span class="viz-output-label">Modelo:</span><span class="viz-output-val">(x+${numShift})/(x²-${d}²)</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">Factorización:</span><span class="viz-output-val">x²-${d}² = (x-${d})(x+${d})</span></div>
+      <div class="viz-output-item"><span class="viz-output-label">C.V.:</span><span class="viz-output-val">ℝ \\ {${-d}, ${d}}</span></div>`;
+  }
+
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value;
+      const v = parseInt(s.value);
+      if (i === 0) d = v;
+      else numShift = v;
+      draw();
+    });
+  });
+  draw();
+}
+
+// ─── 21. Factorization Model ───────────────────────────────────────────────
+function initFactorizationModel(container, params) {
+  const W = 460, H = 300;
+  let a = params.a ?? 4;
+  let b = params.b ?? 2;
+  let mode = params.mode ?? 'difference';
+  container.innerHTML = `
+    <div class="viz-title">Modelo visual de factorización</div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.5rem">
+      <button class="fm-mode" data-mode="difference">a²-b²</button>
+      <button class="fm-mode" data-mode="perfect-square">(a+b)²</button>
+      <button class="fm-mode" data-mode="cubes">a³+b³</button>
+    </div>
+    <div class="viz-canvas-wrap"><canvas class="fm-canvas"></canvas></div>
+    <div class="viz-controls">${sliderRow('a', 1, 8, a, 0.5)}${sliderRow('b', 1, 8, b, 0.5)}</div>
+    <div class="viz-output fm-out"></div>`;
+
+  const canvas = container.querySelector('.fm-canvas');
+  hiDPI(canvas, W, H);
+  const ctx = canvas.getContext('2d');
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const maxSide = Math.min(W - 120, H - 80);
+    const side = Math.max(a + b, a, b);
+    const sc = maxSide / side;
+    const x0 = 60;
+    const y0 = 40;
+
+    if (mode === 'difference') {
+      const A = a * sc;
+      const B = b * sc;
+      ctx.fillStyle = '#bfdbfe'; ctx.fillRect(x0, y0, A, A);
+      ctx.fillStyle = '#fff'; ctx.fillRect(x0 + (A - B) / 2, y0 + (A - B) / 2, B, B);
+      ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2; ctx.strokeRect(x0, y0, A, A);
+      ctx.strokeStyle = '#dc2626'; ctx.strokeRect(x0 + (A - B) / 2, y0 + (A - B) / 2, B, B);
+      container.querySelector('.fm-out').innerHTML = `
+        <div class="viz-output-item"><span class="viz-output-label">Fórmula:</span><span class="viz-output-val">a²-b²=(a+b)(a-b)</span></div>
+        <div class="viz-output-item"><span class="viz-output-label">Ejemplo:</span><span class="viz-output-val">${a}²-${b}²=${(a + b).toFixed(2)}·${(a - b).toFixed(2)}</span></div>
+        <div class="viz-output-item"><span class="viz-output-label">Error común:</span><span class="viz-output-val">a²-b² ≠ (a-b)²</span></div>`;
+    } else if (mode === 'perfect-square') {
+      const A = (a + b) * sc;
+      const sa = a * sc;
+      ctx.fillStyle = '#bfdbfe'; ctx.fillRect(x0, y0, sa, sa);
+      ctx.fillStyle = '#c7d2fe'; ctx.fillRect(x0 + sa, y0, A - sa, sa);
+      ctx.fillRect(x0, y0 + sa, sa, A - sa);
+      ctx.fillStyle = '#fbcfe8'; ctx.fillRect(x0 + sa, y0 + sa, A - sa, A - sa);
+      ctx.strokeStyle = '#1e293b'; ctx.strokeRect(x0, y0, A, A);
+      container.querySelector('.fm-out').innerHTML = `
+        <div class="viz-output-item"><span class="viz-output-label">Fórmula:</span><span class="viz-output-val">(a+b)²=a²+2ab+b²</span></div>
+        <div class="viz-output-item"><span class="viz-output-label">Descomposición:</span><span class="viz-output-val">${(a + b).toFixed(2)}² = ${(a*a).toFixed(2)} + ${(2*a*b).toFixed(2)} + ${(b*b).toFixed(2)}</span></div>`;
+    } else {
+      const cubeA = a * a * a;
+      const cubeB = b * b * b;
+      container.querySelector('.fm-out').innerHTML = `
+        <div class="viz-output-item"><span class="viz-output-label">Fórmula:</span><span class="viz-output-val">a³+b³=(a+b)(a²-ab+b²)</span></div>
+        <div class="viz-output-item"><span class="viz-output-label">Ejemplo numérico:</span><span class="viz-output-val">${a}³+${b}³=${cubeA + cubeB}</span></div>
+        <div class="viz-output-item"><span class="viz-output-label">Factorización:</span><span class="viz-output-val">(${(a+b).toFixed(2)})(${(a*a-a*b+b*b).toFixed(2)})</span></div>`;
+      ctx.fillStyle = '#dbeafe';
+      ctx.fillRect(x0, y0, 180, 180);
+      ctx.fillStyle = '#bfdbfe';
+      ctx.fillRect(x0 + 20, y0 + 20, 110, 110);
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x0, y0, 180, 180);
+    }
+  }
+
+  container.querySelectorAll('.fm-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      mode = btn.dataset.mode;
+      draw();
+    });
+  });
+  container.querySelectorAll('input[type="range"]').forEach((s, i) => {
+    s.addEventListener('input', () => {
+      s.nextElementSibling.textContent = s.value;
+      if (i === 0) a = parseFloat(s.value);
+      else b = parseFloat(s.value);
+      draw();
+    });
+  });
   draw();
 }
 

@@ -66,13 +66,23 @@ export default {
           id: 'function-graph',
           params: { type: 'linear', m: 2, b: -4 },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'ax+b=c\\Rightarrow x=\\frac{c-b}{a},\\qquad y=mx+b' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> en la recta, $m$ controla inclinación y $b$ el corte vertical; resolver $ax+b=c$ equivale a ubicar el valor de $x$ que balancea ambos miembros.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: mover términos de lado sin cambiar correctamente el signo o dividir por un coeficiente equivocado.',
+        },
       ],
       guidedExercises: [
         {
           id: 'lin-g1',
           type: 'guided',
           difficulty: 1,
-          statement: 'Resuelve: $5x - 3 = 17$.',
+          statement: 'Resuelve: $5x - 3 = 17$ y verifica en la gráfica lineal dónde se ubica el valor de $x$ obtenido.',
           steps: [
             { instruction: 'Suma 3 a ambos lados de la ecuación.', formula: '5x - 3 + 3 = 17 + 3 \\Rightarrow 5x = 20' },
             { instruction: 'Divide ambos lados por 5.', formula: 'x = \\frac{20}{5}', answer: '4', placeholder: 'x = ?' },
@@ -208,6 +218,12 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           type: 'text',
           html: 'La parábola $y = ax^2 + bx + c$ es la representación gráfica de la ecuación cuadrática. Sus cortes con el eje $x$ son las raíces. El vértice es el punto más alto o más bajo. Explora cómo cambia la forma al variar $a$, $b$ y $c$:',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'x=\\frac{-b\\pm\\sqrt{\\Delta}}{2a},\\;\\Delta=b^2-4ac,\\;x_v=-\\frac{b}{2a}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> $\\Delta$ controla cuántos cruces tiene la parábola con el eje $x$; $x_v$ ubica el vértice; los valores de Bhaskara son las abscisas de intersección.',
+        },
         {
           type: 'visualization',
           id: 'function-graph',
@@ -216,6 +232,10 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         {
           type: 'note',
           html: 'Cuando $a > 0$ la parábola abre hacia arriba (tiene mínimo). Cuando $a < 0$ abre hacia abajo (tiene máximo). El vértice está en $x_v = -b/(2a)$.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: asumir dos raíces reales cuando la curva no corta al eje $x$ ($\\Delta<0$).',
         },
       ],
       guidedExercises: [
@@ -233,7 +253,7 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         },
         {
           id: 'quad-g2', type: 'guided', difficulty: 3,
-          statement: 'Resuelve $3x^2 - 5x - 2 = 0$ usando la fórmula general.',
+          statement: 'Resuelve $3x^2 - 5x - 2 = 0$ usando la fórmula general y confirma en la gráfica dónde están las raíces.',
           steps: [
             { instruction: 'Identifica $a=3$, $b=-5$, $c=-2$. Calcula el discriminante $\\Delta = b^2-4ac$.', answer: '49', placeholder: 'Δ = ?' },
             { instruction: '$\\sqrt{\\Delta} = 7$. Ahora: $x_1 = \\frac{5+7}{6} = ?$', answer: '2', placeholder: 'x₁ = ?' },
@@ -295,11 +315,26 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           steps: ['$-2x \\geq 6$', 'Dividir por $-2$ (se invierte el signo): $x \\leq -3$', 'Solución: $(-\\infty, -3]$'],
           result: '$x \\leq -3$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'x \\lessgtr a \\quad\\Rightarrow\\quad \\text{intervalos en }\\mathbb{R}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> el valor $a$ es frontera; el símbolo determina el lado sombreado; el punto es abierto/cerrado según estricta/no estricta.',
+        },
+        {
+          type: 'visualization',
+          id: 'inequality-interval',
+          params: { relation: '<', boundary: 2 },
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: no invertir el símbolo al dividir o multiplicar por un número negativo.',
+        },
       ],
       guidedExercises: [
         {
           id: 'ineq-g1', type: 'guided', difficulty: 2,
-          statement: 'Resuelve $5 - 2x > 1$.',
+          statement: 'Resuelve $5 - 2x > 1$ y verifica en la visualización de intervalos que el lado sombreado coincida.',
           steps: [
             { instruction: 'Resta 5 a ambos lados.', formula: '-2x > 1 - 5 = -4' },
             {
@@ -427,6 +462,15 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
         },
         {
+          type: 'text',
+          html: 'Interpretación geométrica clave: $(a+b)^2$ representa el área de un cuadrado de lado $(a+b)$. Al dividirlo en regiones, aparece un cuadrado $a^2$, otro $b^2$ y dos rectángulos $ab$, por eso la expansión es $a^2 + 2ab + b^2$.',
+        },
+        {
+          type: 'visualization',
+          id: 'binomial-square',
+          params: { a: 4, b: 2 },
+        },
+        {
           type: 'example',
           title: 'Ejemplo: Reconocer y aplicar $(3x-2)^2$',
           problem: '$(3x-2)^2$',
@@ -494,10 +538,20 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           type: 'text',
           html: 'Conecta álgebra y gráfica: cuando $x=k$ es raíz, la curva de $P(x)$ cruza el eje $x$ en ese valor. En exámenes, este enlace ayuda a verificar si un candidato a raíz es razonable antes de aplicar Ruffini.',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'P(k)=\\text{resto al dividir por }(x-k),\\quad P(k)=0\\Rightarrow k\\text{ es raíz}' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> los coeficientes determinan la forma de la curva; el valor $k$ es un punto en el eje $x$ que se valida con Ruffini y con el cruce gráfico.',
+        },
         {
           type: 'visualization',
           id: 'function-graph',
           params: { type: 'quadratic', a: 1, b: -5, c: 6 },
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: confundir mínimo/máximo de la curva con raíces; solo los cortes con el eje $x$ son ceros del polinomio.',
         },
       ],
       guidedExercises: [
@@ -512,7 +566,7 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
         },
         {
           id: 'poly-g2', type: 'guided', difficulty: 3,
-          statement: 'Usa Ruffini para verificar que $x=2$ es raíz de $P(x) = x^3 - 4x^2 + x + 6$.',
+          statement: 'Usa Ruffini para verificar que $x=2$ es raíz de $P(x) = x^3 - 4x^2 + x + 6$ y relaciónalo con el cruce en el eje $x$ del visualizador.',
           steps: [
             { instruction: 'Aplica Ruffini con $k=2$ a los coeficientes $[1, -4, 1, 6]$. El primer coeficiente baja.', info: 'Multiplica cada resultado por 2 y súmalo al siguiente coeficiente.' },
             { instruction: '¿Cuál es el resto $P(2)$?', answer: '0', placeholder: 'Resto = ?' },
@@ -598,11 +652,26 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           result: '$2x(x+2)(x-2)$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: 'a^2-b^2=(a+b)(a-b),\\quad (a+b)^2=a^2+2ab+b^2,\\quad a^3+b^3=(a+b)(a^2-ab+b^2)' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> los productos notables pueden leerse como particiones de área (2D) o descomposición estructural (3D).',
+        },
+        {
+          type: 'visualization',
+          id: 'factorization-model',
+          params: { mode: 'difference', a: 4, b: 2 },
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: confundir $a^2-b^2$ con $(a-b)^2$.',
+        },
       ],
       guidedExercises: [
         {
           id: 'fact-g1', type: 'guided', difficulty: 2,
-          statement: 'Factoriza $x^2 - 9$.',
+          statement: 'Factoriza $x^2 - 9$ apoyándote en el modelo visual de diferencia de cuadrados.',
           steps: [
             { instruction: 'Reconoce el patrón $a^2 - b^2 = (a+b)(a-b)$. Aquí $a = x$ y $b = ?$', answer: '3', placeholder: 'b = ?' },
             { instruction: 'Escribe la factorización: $(x+3)(x-?)$', answer: '3', placeholder: 'segundo factor = ?' },
@@ -684,11 +753,26 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           ],
           result: '$\\dfrac{2x+1}{x(x+1)}$',
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\frac{P(x)}{Q(x)}\\,,\\; Q(x)\\neq 0' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> los ceros del denominador son valores excluidos del C.V.; toda cancelación válida debe hacerse por factores completos.',
+        },
+        {
+          type: 'visualization',
+          id: 'rational-function',
+          params: { d: 3, numShift: 4 },
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: cancelar términos en suma/resta en vez de factores multiplicativos.',
+        },
       ],
       guidedExercises: [
         {
           id: 'alfrac-g1', type: 'guided', difficulty: 2,
-          statement: 'Simplifica $\\dfrac{x^2 - x - 6}{x - 3}$.',
+          statement: 'Simplifica $\\dfrac{x^2 - x - 6}{x - 3}$ y contrasta el C.V. con la visualización de valores excluidos.',
           steps: [
             { instruction: 'Factoriza el numerador $x^2 - x - 6$. Busca dos números con suma $-1$ y producto $-6$.', info: 'Los números son $-3$ y $2$, así que $x^2-x-6 = (x-3)(x+2)$.' },
             { instruction: 'Cancela el factor $(x-3)$. El resultado es $x + ?$', answer: '2', placeholder: 'x + ?' },
@@ -781,11 +865,21 @@ $$\\Delta < 0 \\Rightarrow \\text{sin raíces reales (raíces complejas)}$$`,
           id: 'geometry-gallery',
           params: { defaultShape: 'trapezoid' },
         },
+        { type: 'heading', text: 'Bloque visual estándar' },
+        { type: 'formula', tex: '\\text{Elegir fórmula}\\Rightarrow\\text{identificar tipo de representación }(\\text{algebraica/geométrica})' },
+        {
+          type: 'text',
+          html: '<strong>Qué significa cada término:</strong> cada problema exige primero clasificar el modelo (exponentes, polinomios, racionales o área) y luego mapearlo al visual apropiado.',
+        },
+        {
+          type: 'note',
+          html: 'Error visual frecuente: usar una fórmula de otra familia temática sin validar unidades, restricciones o tipo de figura.',
+        },
       ],
       guidedExercises: [
         {
           id: 'exam-g1', type: 'guided', difficulty: 3,
-          statement: 'Simplifica $\\dfrac{x^n\\cdot x^{n+2}}{x^{2n-1}}$ usando leyes de exponentes y luego evalúa para $x=2$.',
+          statement: 'Simplifica $\\dfrac{x^n\\cdot x^{n+2}}{x^{2n-1}}$ usando leyes de exponentes y contrasta en la galería visual que este ejercicio pertenece al bloque algebraico (no geométrico).',
           steps: [
             { instruction: 'Suma exponentes en el numerador y resta el del denominador.', formula: 'x^{n+n+2-(2n-1)} = x^3' },
             { instruction: '¿Cuál es el exponente final?', answer: '3', placeholder: 'exponente = ?', hint: 'Simplifica $n+n+2-(2n-1)$.' },
